@@ -8,7 +8,7 @@ void Board::setup(){
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
   pinMode(1,INPUT);
   pinMode(2,INPUT);
-  // pinMode(4,INPUT);
+  pinMode(4,INPUT);
 
   //pinMode(0,OUTPUT);
   pinMode(3,OUTPUT);
@@ -18,8 +18,10 @@ void Board::setup(){
 void Board::loop(){
   char buf_temperature[100];
   char buf_lum[100];
+  char buf_bouton[100];
   int val_temp;
   int val_lum;
+  int val_bouton;
 
   static int cpt=0;
   static int bascule=0;
@@ -48,6 +50,28 @@ void Board::loop(){
       bus.write(1,buf_lum,100);
     }
 
+    // lecture sur la pin 4 : capteur de l'etat du bouton
+    val_bouton=analogRead(4);
+    sprintf(buf_bouton,"bouton %d",val_bouton);
+    Serial.println(buf_bouton);
+    
+    if(cpt%5==0){
+        // tous les 5 fois on affiche sur l ecran la luminosite
+      sprintf(buf_bouton,"%d",val_bouton);
+      bus.write(1,buf_bouton,100);
+    }
+
+    //lire la valeur du bouton
+    bascule=digitalRead(4);
+  
+    // on eteint et on allume la LED intelligent
+    if(bascule){
+      digitalWrite(3,HIGH);
+    }
+    else{
+      digitalWrite(3,LOW);
+    }
+
     cpt++;
     sleep(1);
   }
@@ -60,12 +84,7 @@ void Board::loop(){
 
 
 
-  // on eteint et on allume la LED
-  if(bascule)
-    digitalWrite(3,HIGH);
-  else
-    digitalWrite(3,LOW);
-  bascule=1-bascule;
+  
 
 
   

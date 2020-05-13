@@ -5,25 +5,29 @@ int luminosite_environnement = 200;
 
 using namespace std;
 
-// //classe ExternalDigitalSensorButton
-// ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
-// }
+//classe ExternalDigitalSensorButton
+ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
+}
 
-// void ExternalDigitalSensorButton::run(){
-// 	int last_state = OFF;
-
-// 	while(1){
-		
-// 		if (ifstream("on.txt")){
-// 			state = ON;
-// 		}
-// 		else{
-// 			state = OFF;
-// 		}
-// 	}
+void ExternalDigitalSensorButton::run(){
 	
 
-// }
+	while(1){
+		
+		if (ifstream("on.txt")){
+			state = ON;
+		}
+		else{
+			state = OFF;
+		}
+
+		*ptrmem = state;
+	}
+
+
+	sleep(temps);
+
+}
 
 //classe IntelligentDigitalActuatorLED
 IntelligentDigitalActuatorLED::IntelligentDigitalActuatorLED(int t):Device(),state(LOW),temps(t){
@@ -40,16 +44,16 @@ void IntelligentDigitalActuatorLED::run(){
       
       if (last_state!=state){
       	luminosite_environnement -= 50;
-      	cout << "\nlast_state: " << last_state<< "\nnew state : "<<state;
-      	cout << "\nnew luminosite_environnement: " << luminosite_environnement;
+      	// cout << "\nlast_state: " << last_state<< "\nnew state : "<<state;
+      	// cout << "\nnew luminosite_environnement: " << luminosite_environnement;
       }
     }
     else{
     	cout << "((((allume))))\n";
     	if (last_state!=state){
     		luminosite_environnement += 50;
-    		cout << "\nlast_state: " << last_state<< "\nnew state : "<<state;
-    		cout << "\nnew luminosite_environnement: " << luminosite_environnement;
+    		// cout << "\nlast_state: " << last_state<< "\nnew state : "<<state;
+    		// cout << "\nnew luminosite_environnement: " << luminosite_environnement;
     	}
     	
     }
