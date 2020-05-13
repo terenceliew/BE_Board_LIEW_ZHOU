@@ -15,6 +15,8 @@ void Board::setup(){
 void Board::loop(){
   char buf[100];
   int val;
+  int val2;
+
   static int cpt=0;
   static int bascule=0;
   int i=0;
@@ -30,12 +32,12 @@ void Board::loop(){
     }
 
     // lecture sur la pin 2 : capteur de luminosite
-    val=analogRead(2);
-    sprintf(buf,"luminosity %d",val);
+    val2=analogRead(2);
+    sprintf(buf,"luminosity %d",val2);
     Serial.println(buf);
     if(cpt%5==0){
-        // tous les 5 fois on affiche sur l ecran la temperature
-      sprintf(buf,"%d",val);
+        // tous les 5 fois on affiche sur l ecran la luminosite
+      sprintf(buf,"%d",val2);
       bus.write(1,buf,100);
     }
 
