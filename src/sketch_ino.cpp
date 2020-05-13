@@ -7,6 +7,7 @@ void Board::setup(){
   Serial.begin(9600);
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
   pinMode(1,INPUT);
+  pinMode(2,INPUT);
   pinMode(0,OUTPUT);
 }
 
@@ -27,6 +28,17 @@ void Board::loop(){
       sprintf(buf,"%d",val);
       bus.write(1,buf,100);
     }
+
+    // lecture sur la pin 2 : capteur de luminosite
+    val=analogRead(2);
+    sprintf(buf,"luminosity %d",val);
+    Serial.println(buf);
+    if(cpt%5==0){
+        // tous les 5 fois on affiche sur l ecran la temperature
+      sprintf(buf,"%d",val);
+      bus.write(1,buf,100);
+    }
+
     cpt++;
     sleep(1);
   }
