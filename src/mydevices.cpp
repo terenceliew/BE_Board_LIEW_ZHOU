@@ -5,16 +5,72 @@ int luminosite_environnement = 200;
 
 using namespace std;
 
+// //classe ExternalDigitalSensorButton
+// ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
+// }
+
+// void ExternalDigitalSensorButton::run(){
+// 	int last_state = OFF;
+
+// 	while(1){
+		
+// 		if (ifstream("on.txt")){
+// 			state = ON;
+// 		}
+// 		else{
+// 			state = OFF;
+// 		}
+// 	}
+	
+
+// }
+
+//classe IntelligentDigitalActuatorLED
+IntelligentDigitalActuatorLED::IntelligentDigitalActuatorLED(int t):Device(),state(LOW),temps(t){
+}
+
+void IntelligentDigitalActuatorLED::run(){
+	int last_state = LOW;
+
+  while(1){
+    if(ptrmem!=NULL)
+      state=*ptrmem;
+    if (state==LOW){
+      cout << "((((eteint))))\n";
+      
+      if (last_state!=state){
+      	luminosite_environnement -= 50;
+      	cout << "\nlast_state: " << last_state<< "\nnew state : "<<state;
+      	cout << "\nnew luminosite_environnement: " << luminosite_environnement;
+      }
+    }
+    else{
+    	cout << "((((allume))))\n";
+    	if (last_state!=state){
+    		luminosite_environnement += 50;
+    		cout << "\nlast_state: " << last_state<< "\nnew state : "<<state;
+    		cout << "\nnew luminosite_environnement: " << luminosite_environnement;
+    	}
+    	
+    }
+    
+    last_state=state;
+    sleep(temps);
+    }
+}
+
 //classe AnalogSensorLuminosity
 AnalogSensorLuminosity::AnalogSensorLuminosity(int  d):Device(),val(luminosite_environnement),temps(d){
-  alea=1;
+  //alea=10;
 }
 
 void AnalogSensorLuminosity::run(){
   while(1){
-    alea=1-alea;
+    //alea=10-alea;
     if(ptrmem!=NULL)
-      *ptrmem=val+alea;
+      //*ptrmem=val+alea;
+    	*ptrmem=luminosite_environnement;
+    
     sleep(temps);
   }
 }

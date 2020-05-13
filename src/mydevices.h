@@ -5,8 +5,38 @@
 #include <thread>
 #include <unistd.h>
 #include <string.h>
+#include <fstream>
 #include "core_simulation.h"
 
+// // actionneur digital intelligent : une led
+// class ExternalDigitalSensorButton: public Device {
+// private:
+//   // etat du bouton
+//   int state;
+//   // temps entre 2 affichage de l etat du bouton
+//   int temps;
+  
+// public:
+//     // initialisation du temps de rafraichiisement
+//   ExternalDigitalSensorButton(int t);
+//   // thread representant l'actionneur et permettant de fonctionner independamment de la board
+//   virtual void run();
+// };
+
+// actionneur digital intelligent : une led
+class IntelligentDigitalActuatorLED: public Device {
+private:
+  // etat de la LED
+  int state;
+  // temps entre 2 affichage de l etat de la led
+  int temps;
+  
+public:
+    // initialisation du temps de rafraichiisement
+  IntelligentDigitalActuatorLED(int t);
+  // thread representant l'actionneur et permettant de fonctionner independamment de la board
+  virtual void run();
+};
 
 
 //  capteur luminosite

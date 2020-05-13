@@ -21,6 +21,8 @@
 #define MAX_I2C_DEVICES 4
 #define I2C_BUFFER_SIZE 1024
 #define MAX_IO_PIN 6
+#define ON 1
+#define OFF 0
 
 using namespace std;
 
