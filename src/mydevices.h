@@ -8,7 +8,8 @@
 #include <fstream>
 #include "core_simulation.h"
 
-// actionneur digital intelligent : une led
+
+// capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
 private:
   // etat du bouton
@@ -19,7 +20,7 @@ private:
 public:
     // initialisation du temps de rafraichiisement
   ExternalDigitalSensorButton(int t);
-  // thread representant l'actionneur et permettant de fonctionner independamment de la board
+  // thread representant le capteur et permettant de fonctionner independamment de la board
   virtual void run();
 };
 
