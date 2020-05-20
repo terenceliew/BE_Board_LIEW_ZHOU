@@ -2,8 +2,84 @@
 #include "mydevices.h"
 
 int luminosite_environnement = 200;
+int Force = 0;
+int Angle = 0;
+int loadfpfile = 0;
+int detectedfreqRFID = 0;
+int wrong_pwd = 0;
+int wrong_fp = 0;
 
 using namespace std;
+//Actuator
+Actuator::Actuator(int d):Device(),temps(d){
+}
+void Actuator::setTemps(int d){
+  temps = d;
+}
+int Actuator::getTemps(){
+  return temps;
+}
+//DigitalActuator
+DigitalActuator::DigitalActuator(int d):Actuator(d),state(OFF){
+}
+void DigitalActuator::setState(int s){
+  state = s;
+}
+int DigitalActuator::getState(){
+  return state;
+}
+//AnalogActuator
+AnalogActuator::AnalogActuator(int d):Actuator(d),val(0){
+}
+void AnalogActuator::setVal(int v){
+  val = v;
+}
+int AnalogActuator::getVal(){
+  return val;
+}
+//class Camera
+Camera::Camera(int d):DigitalActuator(d),capture(0){
+  setState(LOW);
+}
+void Camera::run(){
+  while(1){
+    if(ptrmem!=NULL) setState(*ptrmem);
+    if (getState()==LOW){
+      //cout << "((((Camera OFF))))\n";
+    }
+    else{
+    	//cout << "((((Camera ON))))\n"; 
+    if(Force>100) capture=1;   
+    sleep(getTemps());
+    }
+  }
+}
+//class LED
+LED::LED(int d):DigitalActuator(d){
+  setState(LOW);
+}
+void LED::run(){
+  	int last_state = LOW;
+
+  while(1){
+    if(ptrmem!=NULL) setState(*ptrmem);
+    if (getState()==LOW){
+      //cout << "((((eteint))))\n";      
+      if (last_state!=getState()){
+      	luminosite_environnement -= 50;
+      }
+    }
+    else{
+    	//cout << "((((allume))))\n";
+    	if (last_state!=getState()){
+    		luminosite_environnement += 50;
+      }	
+    }    
+    last_state=getState();
+    sleep(getTemps());
+    }
+
+}
 
 //classe ExternalDigitalSensorButton
 ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
@@ -76,8 +152,7 @@ void AnalogSensorLuminosity::run(){
     	val=luminosite_environnement;
     	*ptrmem=val;//+alea
     }
-      
-    
+    	
     sleep(temps);
   }
 }
