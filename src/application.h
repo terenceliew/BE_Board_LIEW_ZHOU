@@ -9,3 +9,20 @@
 #include "core_simulation.h"
 #include "mydevices.h"
 
+
+class Door {
+private:
+	int pinServo;
+	int pinIndoorButton;
+public:
+	Door(int pServo, int pIndoorButton);
+	void open();
+	void close();
+	void detectIndoor();
+};
+
+
+
+
+
+#endif

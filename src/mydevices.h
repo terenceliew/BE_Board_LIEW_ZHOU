@@ -17,6 +17,25 @@ extern int detectedfreqRFID;
 extern int wrong_pwd;
 extern int wrong_fp;
 
+class Sensor : public Device{
+  private :
+    int temps;
+  public : 
+    Sensor(int d);
+    void setTemps(int d);
+    int getTemps();
+};
+
+class DigitalSensor: public Sensor{
+  private :
+    int state;
+  public :
+    DigitalSensor(int d);
+    void setState(int s);
+    int getState();
+};
+
+
 class Actuator: public Device{
   private :
     int temps;
@@ -65,6 +84,13 @@ class LED : public DigitalActuator{
 class Servo : public AnalogActuator{
   public :
   Servo(int d);
+  virtual void run();
+};
+
+//BoutonIndoor
+class IndoorButton : public DigitalSensor{
+public:
+  IndoorButton(int d);
   virtual void run();
 };
 

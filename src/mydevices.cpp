@@ -10,9 +10,31 @@ int detectedfreqRFID = 0;
 int wrong_pwd = 0;
 int wrong_fp = 0;
 
-//test 2
+
 using namespace std;
-//Actuatorss
+
+//Sensor
+Sensor::Sensor(int d):Device(),temps(d){
+}
+void Sensor::setTemps(int d){
+  temps = d;
+}
+int Sensor::getTemps(){
+  return temps;
+}
+
+//DigitalSensor
+DigitalSensor::DigitalSensor(int d):Sensor(d),state(OFF){
+}
+void DigitalSensor::setState(int s){
+  state = s;
+}
+int DigitalSensor::getState(){
+  return state;
+}
+
+
+//Actuator
 Actuator::Actuator(int d):Device(),temps(d){
 }
 void Actuator::setTemps(int d){
@@ -21,6 +43,7 @@ void Actuator::setTemps(int d){
 int Actuator::getTemps(){
   return temps;
 }
+
 //DigitalActuator
 DigitalActuator::DigitalActuator(int d):Actuator(d),state(OFF){
 }
@@ -30,6 +53,7 @@ void DigitalActuator::setState(int s){
 int DigitalActuator::getState(){
   return state;
 }
+
 //AnalogActuator
 AnalogActuator::AnalogActuator(int d):Actuator(d),val(0){
 }
@@ -39,6 +63,7 @@ void AnalogActuator::setVal(int v){
 int AnalogActuator::getVal(){
   return val;
 }
+
 //class Camera
 Camera::Camera(int d):DigitalActuator(d),capture(0){
   setState(LOW);
@@ -56,6 +81,7 @@ void Camera::run(){
     }
   }
 }
+
 //class LED
 LED::LED(int d):DigitalActuator(d){
   setState(LOW);
@@ -82,6 +108,7 @@ void LED::run(){
     }
 
 }
+
 //Class Servo
 Servo::Servo(int d):AnalogActuator(d){
   setVal(0);
@@ -90,15 +117,38 @@ Servo::Servo(int d):AnalogActuator(d){
 void Servo::run(){
   while(1){
     if(ptrmem!=NULL) setVal(*ptrmem);
-    if(getVal()>=70){
-      cout<<"Door OPEN"<<endl;
-    }else if(getVal()<70){
-      cout<<"Door CLOSE"<<endl;
-    }else{
-      cout<<"ERREUR Servo"<<endl;
-    }
+    // if(getVal()>=70){
+    //   cout<<"Door OPEN"<<endl;
+    // }else if(getVal()<70){
+    //   cout<<"Door CLOSE"<<endl;
+    // }else{
+    //   cout<<"ERREUR Servo"<<endl;
+    // }
+
+    Angle = (getVal()/1000)*360;
+	cout<< "Angle de la porte : "<< Angle<<endl;
+
     sleep(getTemps());
   }
+}
+
+IndoorButton::IndoorButton(int d):DigitalSensor(d){
+	setState(OFF);
+}
+
+void IndoorButton::run(){
+	while(1){
+		if (ifstream("indoor.txt")){
+			setState(ON);
+		}
+		else{
+			setState(OFF);
+		}
+
+		*ptrmem = getState();
+	}
+
+	sleep(getTemps());
 }
 
 //classe ExternalDigitalSensorButton
