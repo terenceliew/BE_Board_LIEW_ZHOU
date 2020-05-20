@@ -7,7 +7,30 @@
 #include <string.h>
 #include <fstream>
 #include "core_simulation.h"
-
+class Actuator: public Device{
+  private :
+    int temps;
+  public : 
+    Actuator(int d);
+    void setTemps(int d);
+    int getTemps();
+};
+class DigitalActuator: public Actuator{
+  private :
+    int state;
+  public :
+    DigitalActuator(int d);
+    void setState(int s);
+    int getState();
+};
+class AnalogActuator:public Actuator{
+  private :
+    int val;
+  public :
+    AnalogActuator(int d);
+    void setVal(int v);
+    int getVal();
+};
 
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {

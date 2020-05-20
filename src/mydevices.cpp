@@ -4,6 +4,33 @@
 int luminosite_environnement = 200;
 
 using namespace std;
+//Actuator
+Actuator::Actuator(int d):Device(),temps(d){
+}
+void Actuator::setTemps(int d){
+  temps = d;
+}
+int Actuator::getTemps(){
+  return temps;
+}
+//DigitalActuator
+DigitalActuator::DigitalActuator(int d):Actuator(d),state(OFF){
+}
+void DigitalActuator::setState(int s){
+  state = s;
+}
+int DigitalActuator::getState(){
+  return state;
+}
+//AnalogActuator
+AnalogActuator::AnalogActuator(int d):Actuator(d),val(0){
+}
+void AnalogActuator::setVal(int v){
+  val = v;
+}
+int AnalogActuator::getVal(){
+  return val;
+}
 
 //classe ExternalDigitalSensorButton
 ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
