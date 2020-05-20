@@ -125,7 +125,7 @@ void Servo::run(){
     //   cout<<"ERREUR Servo"<<endl;
     // }
 
-    Angle = (getVal()/1000)*360;
+    Angle = (getVal()/100)*360;
 	cout<< "Angle de la porte : "<< Angle<<endl;
 
     sleep(getTemps());

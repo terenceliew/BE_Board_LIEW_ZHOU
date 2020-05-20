@@ -1,22 +1,26 @@
 #include "application.h"
 
 
-Door::Door(int pServo, int pIndoorButton):pinServo(pServo),pinIndoorButton(pIndoorButton){
-	analogWrite(pinServo,0);
+Door::Door(){
+	cmdAngle=0;
+}
+
+int Door::get_cmdAngle(){
+	return cmdAngle;
 }
 
 /*open*/
 void Door::open(){
-	analogWrite(pinServo,100);
+	cmdAngle=100;;
 }
 
 /*close*/
 void Door::close(){
-	analogWrite(pinServo,0);
+	cmdAngle=0;
 }
 
-void Door::detectIndoor(){
-	if(digitalRead(pinIndoorButton)){
+void Door::detectIndoor(int val_button){
+	if(val_button){
 		open();
 	}
 	else{

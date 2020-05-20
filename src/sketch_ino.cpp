@@ -2,6 +2,7 @@
 #include "core_simulation.h"
 #include "application.h"
 
+static Door myDoor;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -9,8 +10,11 @@ void Board::setup(){
   Serial.begin(9600);
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
   pinMode(1,INPUT);
-  pinMode(3,INPUT);
   pinMode(2,OUTPUT);
+  pinMode(3,INPUT);
+  
+
+
   
   
   // pinMode(2,INPUT);
@@ -22,7 +26,7 @@ void Board::setup(){
 
 // la boucle de controle arduino
 void Board::loop(){
-  Door MyDoor(2,3);
+  
   // char buf_temperature[100];
   // char buf_lum[100];
   // char buf_bouton[100];
@@ -32,6 +36,21 @@ void Board::loop(){
 
   //static int cpt=0;
   //static int bascule=0;
+  static int val_but1; 
+
+
+  //recuperation des valeurs de capteurs
+  val_but1 = digitalRead(3);
+
+  //appel de software
+  myDoor.detectIndoor(val_but1);
+
+  //faire la commande
+  analogWrite(2,myDoor.get_cmdAngle());
+
+  //mettre a jour les capteurs
+
+
 
   //int i=0;
 
@@ -82,13 +101,6 @@ void Board::loop(){
   //   cpt++;
   //   sleep(1);
   // }
-
-
-  MyDoor.detectIndoor();
-
-
-
-  
 
 
   

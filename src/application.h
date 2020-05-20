@@ -12,13 +12,14 @@
 
 class Door {
 private:
-	int pinServo;
-	int pinIndoorButton;
+	int cmdAngle;
+	
 public:
-	Door(int pServo, int pIndoorButton);
+	Door();
+	int get_cmdAngle();
 	void open();
 	void close();
-	void detectIndoor();
+	void detectIndoor(int val_button);
 };
 
 
