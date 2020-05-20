@@ -9,8 +9,9 @@ int detectedfreqRFID = 0;
 int wrong_pwd = 0;
 int wrong_fp = 0;
 
+//test 2
 using namespace std;
-//Actuator
+//Actuatorss
 Actuator::Actuator(int d):Device(),temps(d){
 }
 void Actuator::setTemps(int d){
