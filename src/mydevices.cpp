@@ -80,6 +80,24 @@ void LED::run(){
     }
 
 }
+//Class Servo
+Servo::Servo(int d):AnalogActuator(d){
+  setVal(0);
+}
+
+void Servo::run(){
+  while(1){
+    if(ptrmem!=NULL) setVal(*ptrmem);
+    if(getVal()>=70){
+      cout<<"Door OPEN"<<endl;
+    }else if(getVal()<70){
+      cout<<"Door CLOSE"<<endl;
+    }else{
+      cout<<"ERREUR Servo"<<endl;
+    }
+    sleep(getTemps());
+  }
+}
 
 //classe ExternalDigitalSensorButton
 ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
