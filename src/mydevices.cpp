@@ -71,9 +71,12 @@ AnalogSensorLuminosity::AnalogSensorLuminosity(int  d):Device(),val(luminosite_e
 void AnalogSensorLuminosity::run(){
   while(1){
     //alea=10-alea;
-    if(ptrmem!=NULL)
-      //*ptrmem=val+alea;
-    	*ptrmem=luminosite_environnement;
+    if(ptrmem!=NULL){
+    	//*ptrmem=val+alea;
+    	val=luminosite_environnement;
+    	*ptrmem=val;//+alea
+    }
+      
     
     sleep(temps);
   }
