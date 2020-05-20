@@ -37,7 +37,9 @@ void AnalogActuator::setVal(int v){
 int AnalogActuator::getVal(){
   return val;
 }
+//class Camera
 Camera::Camera(int d):DigitalActuator(d),capture(0){
+  setState(LOW);
 }
 void Camera::run(){
   while(1){
@@ -51,6 +53,32 @@ void Camera::run(){
     sleep(getTemps());
     }
   }
+}
+//class LED
+LED::LED(int d):DigitalActuator(d){
+  setState(LOW);
+}
+void LED::run(){
+  	int last_state = LOW;
+
+  while(1){
+    if(ptrmem!=NULL) setState(*ptrmem);
+    if (getState()==LOW){
+      //cout << "((((eteint))))\n";      
+      if (last_state!=getState()){
+      	luminosite_environnement -= 50;
+      }
+    }
+    else{
+    	//cout << "((((allume))))\n";
+    	if (last_state!=getState()){
+    		luminosite_environnement += 50;
+      }	
+    }    
+    last_state=getState();
+    sleep(getTemps());
+    }
+
 }
 
 //classe ExternalDigitalSensorButton

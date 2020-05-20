@@ -15,6 +15,7 @@ class Actuator: public Device{
     void setTemps(int d);
     int getTemps();
 };
+
 class DigitalActuator: public Actuator{
   private :
     int state;
@@ -23,6 +24,7 @@ class DigitalActuator: public Actuator{
     void setState(int s);
     int getState();
 };
+
 class AnalogActuator:public Actuator{
   private :
     int val;
@@ -32,11 +34,21 @@ class AnalogActuator:public Actuator{
     int getVal();
 };
 
+//Class Camera
 class Camera : public DigitalActuator{
   private :
     int capture;
   public :
+    // initialisation du temps de rafraichiisement
     Camera(int d);
+    virtual void run();
+};
+
+//Class LED
+class LED : public DigitalActuator{
+  public :
+    // initialisation du temps de rafraichiisement
+    LED(int d);
     virtual void run();
 };
 
