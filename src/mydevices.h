@@ -7,7 +7,56 @@
 #include <string.h>
 #include <fstream>
 #include "core_simulation.h"
+class Actuator: public Device{
+  private :
+    int temps;
+  public : 
+    Actuator(int d);
+    void setTemps(int d);
+    int getTemps();
+};
 
+class DigitalActuator: public Actuator{
+  private :
+    int state;
+  public :
+    DigitalActuator(int d);
+    void setState(int s);
+    int getState();
+};
+
+class AnalogActuator:public Actuator{
+  private :
+    int val;
+  public :
+    AnalogActuator(int d);
+    void setVal(int v);
+    int getVal();
+};
+
+//Class Camera
+class Camera : public DigitalActuator{
+  private :
+    int capture;
+  public :
+    // initialisation du temps de rafraichiisement
+    Camera(int d);
+    virtual void run();
+};
+
+//Class LED
+class LED : public DigitalActuator{
+  public :
+    // initialisation du temps de rafraichiisement
+    LED(int d);
+    virtual void run();
+};
+//Class Servo
+class Servo : public AnalogActuator{
+  public :
+  Servo(int d);
+  virtual void run();
+};
 
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
