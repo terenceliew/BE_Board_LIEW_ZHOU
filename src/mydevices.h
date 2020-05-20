@@ -51,6 +51,12 @@ class LED : public DigitalActuator{
     LED(int d);
     virtual void run();
 };
+//Class Servo
+class Servo : public AnalogActuator{
+  public :
+  Servo(int d);
+  virtual void run();
+};
 
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
