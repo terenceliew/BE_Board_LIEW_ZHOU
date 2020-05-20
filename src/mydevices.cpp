@@ -2,6 +2,12 @@
 #include "mydevices.h"
 
 int luminosite_environnement = 200;
+int Force = 0;
+int Angle = 0;
+int loadfpfile = 0;
+int detectedfreqRFID = 0;
+int wrong_pwd = 0;
+int wrong_fp = 0;
 
 using namespace std;
 //Actuator
@@ -30,6 +36,21 @@ void AnalogActuator::setVal(int v){
 }
 int AnalogActuator::getVal(){
   return val;
+}
+Camera::Camera(int d):DigitalActuator(d),capture(0){
+}
+void Camera::run(){
+  while(1){
+    if(ptrmem!=NULL) setState(*ptrmem);
+    if (getState()==LOW){
+      //cout << "((((Camera OFF))))\n";
+    }
+    else{
+    	//cout << "((((Camera ON))))\n"; 
+    if(Force>100) capture=1;   
+    sleep(getTemps());
+    }
+  }
 }
 
 //classe ExternalDigitalSensorButton

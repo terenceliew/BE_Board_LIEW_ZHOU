@@ -32,6 +32,14 @@ class AnalogActuator:public Actuator{
     int getVal();
 };
 
+class Camera : public DigitalActuator{
+  private :
+    int capture;
+  public :
+    Camera(int d);
+    virtual void run();
+};
+
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
 private:
