@@ -1,2 +1,2 @@
 /src/arduino
-*.txt
+/src/*.txt
