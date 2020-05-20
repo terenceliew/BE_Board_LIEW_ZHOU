@@ -7,6 +7,16 @@
 #include <string.h>
 #include <fstream>
 #include "core_simulation.h"
+
+/*Declaration des varibales globales (variables environment)*/
+extern int luminosite_environnement;
+extern int Force;
+extern int Angle;
+extern int loadfpfile;
+extern int detectedfreqRFID;
+extern int wrong_pwd;
+extern int wrong_fp;
+
 class Actuator: public Device{
   private :
     int temps;

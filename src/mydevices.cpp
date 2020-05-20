@@ -1,6 +1,7 @@
 
 #include "mydevices.h"
 
+/*Initialisation des varibales globales (variables environment)*/
 int luminosite_environnement = 200;
 int Force = 0;
 int Angle = 0;
