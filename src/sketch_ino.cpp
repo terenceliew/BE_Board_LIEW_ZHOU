@@ -14,9 +14,11 @@ void Board::setup(){
   pinMode(2,OUTPUT);
   pinMode(3,INPUT);
   pinMode(4,INPUT);
+  pinMode(5,INPUT);
 
-
-  
+  for(int i=0;i<6;i++){
+    io[i]=0;
+  }
   
   // pinMode(2,INPUT);
   // pinMode(4,INPUT);
@@ -37,20 +39,26 @@ void Board::loop(){
 
   //static int cpt=0;
   //static int bascule=0;
-  static int val_but1; 
-  static int val_fp;
-  static int cmdIndoor;
-  static int cmdFp;
+   int val_butIndoor; 
+   int val_fp;
+   int val_setFp;
+   int cmdIndoor;
+   int cmdFp;
 
   //recuperation des valeurs de capteurs
-  val_but1 = digitalRead(3);
+  val_butIndoor = digitalRead(3);
   val_fp = analogRead(4);
 
+  //cout<<"out"<<val_fp<<endl;
+  val_setFp = digitalRead(5);
+  //cout<<"weird"<<val_setFp<<endl;
   //appel de software
   /*Indoor*/
-  cmdIndoor = myDoor.detectIndoor(val_but1);
+  cmdIndoor = myDoor.detectIndoor(val_butIndoor);
 
   /*Fingerprint System*/
+  //cout << "hello";
+  fpSys.setFingerprint(val_setFp,val_fp);
   fpSys.verifyFingerprint(val_fp);
   cmdFp = fpSys.getMatch();
 

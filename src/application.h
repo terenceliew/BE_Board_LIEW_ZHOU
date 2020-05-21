@@ -31,6 +31,7 @@ public:
 	FingerprintSystem();
 	int getMatch();
 	void verifyFingerprint(int loadfpval);
+	void setFingerprint(int buttonFp, int val_fp);
 };
 
 

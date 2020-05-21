@@ -43,7 +43,7 @@ int FingerprintSystem::getMatch(){
 /*verifyFingerprint*/
 void FingerprintSystem::verifyFingerprint(int loadfpval){
 	string savedfpstring;
-	int savedfpval;
+	static int savedfpval;
 	fstream savedfpfile;
 
 	savedfpfile.open("savedfp.txt");
@@ -51,14 +51,58 @@ void FingerprintSystem::verifyFingerprint(int loadfpval){
 		getline(savedfpfile,savedfpstring);
 		
 	}
-	
-	savedfpval=stoi(savedfpstring);
+	//cout<<"savedstring:"<<savedfpstring<<endl;
+	if (!savedfpstring.empty()){
+		//cout<<"ho"<<endl;
+		savedfpval=stoi(savedfpstring);
+	}
+	//cout<<"savedvalue:"<<savedfpval<<endl;
 	
 	if(savedfpval==loadfpval){
 		match=1;
 	}else{
 		match=0;
 	}
-
+	//cout<<"match"<<match<<endl;
 	savedfpfile.close();
+}
+
+/*set new Fingerprint*/
+void FingerprintSystem::setFingerprint(int buttonFp,int newFp){
+	string savedfpstring;
+	//int savedfpval;
+	fstream savedfpfile;
+
+	//cout<<"hi"<<newFp<<endl;
+	if(buttonFp){
+		// cout<<"newfp :"<<to_string(newFp)<<endl;
+		
+			//cout<<"helllllooooo"<<endl;
+		savedfpfile.open("savedfp.txt"); //delete content before open
+
+		savedfpfile << to_string(newFp);
+		
+		
+		savedfpfile.close();
+			// getline(savedfpfile,savedfpstring);
+			// cout<<"saved : "<<savedfpstring<<endl;
+			
+	}
+	
+	// savedfpfile.open("savedfp.txt");
+	// while(!savedfpfile.eof()){
+	// 	getline(savedfpfile,savedfpstring);
+		
+	// }
+	// cout<<"after : "<<savedfpstring<<endl;
+	// savedfpfile.close();
+	//savedfpval=stoi(savedfpstring);
+	
+	// if(savedfpval==loadfpval){
+	// 	match=1;
+	// }else{
+	// 	match=0;
+	// }
+
+	
 }

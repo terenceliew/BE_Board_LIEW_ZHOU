@@ -194,12 +194,6 @@ BiometricSensor::BiometricSensor(int d):AnalogSensor(d){
 void BiometricSensor::run(){
 	string loadfpstring;
 	while(1){
-		// if (ifstream("setfp.txt")){
-		// 	setState(ON);
-		// }
-		// else{
-		// 	setState(OFF);
-		// }
 
 		loadfpfile.open("loadfp.txt");
 		while(!loadfpfile.eof()){

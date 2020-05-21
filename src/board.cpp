@@ -13,6 +13,7 @@ int main(){
   //IntelligentDigitalActuatorLED led2(DELAY);
   Servo servm(DELAY);
   Button butIndoor(DELAY,"indoor.txt");
+  Button setFp (DELAY, "setFp.txt");
   BiometricSensor fp(DELAY);
   I2CActuatorScreen screen;
   
@@ -23,7 +24,7 @@ int main(){
   esp8266.pin(2,servm);
   esp8266.pin(3,butIndoor);
   esp8266.pin(4,fp);
- 
+  esp8266.pin(5,setFp);
   //esp8266.pin(0,led1);
   //esp8266.pin(3,led2);
   esp8266.i2c(1,screen);
