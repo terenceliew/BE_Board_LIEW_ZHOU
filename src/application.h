@@ -20,7 +20,7 @@ public:
 	void set_cmdAngle(int a);
 	void open();
 	void close();
-	void detectIndoor(int val_button);
+	int detectIndoor(int val_button);
 };
 
 class FingerprintSystem{

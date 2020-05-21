@@ -23,13 +23,15 @@ void Door::close(){
 	cmdAngle=0;
 }
 
-void Door::detectIndoor(int val_button){
+int Door::detectIndoor(int val_button){
+	int open;
 	if(val_button){
-		open();
+		open = 1;
 	}
 	else{
-		close();
+		open = 0;
 	}
+	return open;
 }
 
 FingerprintSystem::FingerprintSystem():match(0){}

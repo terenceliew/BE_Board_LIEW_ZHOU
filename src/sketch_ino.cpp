@@ -12,7 +12,7 @@ void Board::setup(){
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
   pinMode(1,INPUT);
   pinMode(2,OUTPUT);
-  //pinMode(3,INPUT);
+  pinMode(3,INPUT);
   pinMode(4,INPUT);
 
 
@@ -37,21 +37,25 @@ void Board::loop(){
 
   //static int cpt=0;
   //static int bascule=0;
-  //static int val_but1; 
+  static int val_but1; 
   static int val_fp;
+  static int cmdIndoor;
+  static int cmdFp;
 
   //recuperation des valeurs de capteurs
-  //val_but1 = digitalRead(3);
+  val_but1 = digitalRead(3);
   val_fp = analogRead(4);
 
   //appel de software
   /*Indoor*/
-  //myDoor.detectIndoor(val_but1);
+  cmdIndoor = myDoor.detectIndoor(val_but1);
 
   /*Fingerprint System*/
   fpSys.verifyFingerprint(val_fp);
-  
-  if(fpSys.getMatch()){
+  cmdFp = fpSys.getMatch();
+
+  /*Choisir la commande*/
+  if(cmdIndoor || cmdFp){
     myDoor.open();
   }
   else{
