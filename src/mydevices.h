@@ -7,6 +7,46 @@
 #include <string.h>
 #include <fstream>
 #include "core_simulation.h"
+
+/*Declaration des varibales globales (variables environment)*/
+extern int luminosite_environnement;
+extern int Force;
+extern int Angle;
+extern fstream loadfpfile;
+extern int detectedfreqRFID;
+extern int wrong_pwd;
+extern int wrong_fp;
+
+class Sensor : public Device{
+  private :
+    int temps;
+  public : 
+    Sensor(int d);
+    void setTemps(int d);
+    int getTemps();
+};
+
+class DigitalSensor: public Sensor{
+  private :
+    int state;
+  public :
+    DigitalSensor(int d);
+    void setState(int s);
+    int getState();
+};
+
+class AnalogSensor: public Sensor{
+  private :
+    int val;
+    int alea;
+  public :
+    AnalogSensor(int d);
+    void setVal(int val);
+    int getVal();
+    void setAlea(int a);
+};
+
+
 class Actuator: public Device{
   private :
     int temps;
@@ -55,6 +95,20 @@ class LED : public DigitalActuator{
 class Servo : public AnalogActuator{
   public :
   Servo(int d);
+  virtual void run();
+};
+
+//BoutonIndoor
+class IndoorButton : public DigitalSensor{
+public:
+  IndoorButton(int d);
+  virtual void run();
+};
+
+//BiometricSensor
+class BiometricSensor : public AnalogSensor{
+public:
+  BiometricSensor(int d);
   virtual void run();
 };
 

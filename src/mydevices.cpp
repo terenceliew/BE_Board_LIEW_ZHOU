@@ -1,15 +1,52 @@
 
 #include "mydevices.h"
 
+/*Initialisation des varibales globales (variables environment)*/
 int luminosite_environnement = 200;
 int Force = 0;
 int Angle = 0;
-int loadfpfile = 0;
 int detectedfreqRFID = 0;
 int wrong_pwd = 0;
 int wrong_fp = 0;
+fstream loadfpfile;
+
 
 using namespace std;
+
+//Sensor
+Sensor::Sensor(int d):Device(),temps(d){
+}
+void Sensor::setTemps(int d){
+  temps = d;
+}
+int Sensor::getTemps(){
+  return temps;
+}
+
+//DigitalSensor
+DigitalSensor::DigitalSensor(int d):Sensor(d),state(OFF){
+}
+void DigitalSensor::setState(int s){
+  state = s;
+}
+int DigitalSensor::getState(){
+  return state;
+}
+
+//AnalogSensor
+AnalogSensor::AnalogSensor(int d):Sensor(d),val(0),alea(0){
+}
+void AnalogSensor::setVal(int v){
+  val = v;
+}
+int AnalogSensor::getVal(){
+  return val;
+}
+void AnalogSensor::setAlea(int a){
+	alea = a;
+}
+
+
 //Actuator
 Actuator::Actuator(int d):Device(),temps(d){
 }
@@ -19,6 +56,7 @@ void Actuator::setTemps(int d){
 int Actuator::getTemps(){
   return temps;
 }
+
 //DigitalActuator
 DigitalActuator::DigitalActuator(int d):Actuator(d),state(OFF){
 }
@@ -28,6 +66,7 @@ void DigitalActuator::setState(int s){
 int DigitalActuator::getState(){
   return state;
 }
+
 //AnalogActuator
 AnalogActuator::AnalogActuator(int d):Actuator(d),val(0){
 }
@@ -37,6 +76,7 @@ void AnalogActuator::setVal(int v){
 int AnalogActuator::getVal(){
   return val;
 }
+
 //class Camera
 Camera::Camera(int d):DigitalActuator(d),capture(0){
   setState(LOW);
@@ -54,6 +94,7 @@ void Camera::run(){
     }
   }
 }
+
 //class LED
 LED::LED(int d):DigitalActuator(d){
   setState(LOW);
@@ -80,6 +121,7 @@ void LED::run(){
     }
 
 }
+
 //Class Servo
 Servo::Servo(int d):AnalogActuator(d){
   setVal(0);
@@ -88,15 +130,63 @@ Servo::Servo(int d):AnalogActuator(d){
 void Servo::run(){
   while(1){
     if(ptrmem!=NULL) setVal(*ptrmem);
-    if(getVal()>=70){
-      cout<<"Door OPEN"<<endl;
-    }else if(getVal()<70){
-      cout<<"Door CLOSE"<<endl;
-    }else{
-      cout<<"ERREUR Servo"<<endl;
-    }
+    // if(getVal()>=70){
+    //   cout<<"Door OPEN"<<endl;
+    // }else if(getVal()<70){
+    //   cout<<"Door CLOSE"<<endl;
+    // }else{
+    //   cout<<"ERREUR Servo"<<endl;
+    // }
+
+    Angle = (getVal()/100)*360;
+	cout<< "Angle de la porte : "<< Angle<<endl;
+
     sleep(getTemps());
   }
+}
+
+IndoorButton::IndoorButton(int d):DigitalSensor(d){
+	setState(OFF);
+}
+
+void IndoorButton::run(){
+	while(1){
+		if (ifstream("indoor.txt")){
+			setState(ON);
+		}
+		else{
+			setState(OFF);
+		}
+
+		*ptrmem = getState();
+	
+		sleep(getTemps());	
+	}
+
+	
+}
+
+BiometricSensor::BiometricSensor(int d):AnalogSensor(d){
+	setVal(0);
+}
+
+void BiometricSensor::run(){
+	string loadfpstring;
+	while(1){
+		loadfpfile.open("loadfp.txt");
+		while(!loadfpfile.eof()){
+			getline(loadfpfile,loadfpstring);
+			
+		}
+		cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
+
+		setVal(stoi(loadfpstring)); 
+		*ptrmem=getVal();
+		
+		loadfpfile.close();
+
+		sleep(getTemps());
+	}
 }
 
 //classe ExternalDigitalSensorButton
@@ -116,10 +206,12 @@ void ExternalDigitalSensorButton::run(){
 		}
 
 		*ptrmem = state;
+
+		sleep(temps);
 	}
 
 
-	sleep(temps);
+	
 
 }
 
@@ -165,10 +257,12 @@ AnalogSensorLuminosity::AnalogSensorLuminosity(int  d):Device(),val(luminosite_e
 void AnalogSensorLuminosity::run(){
   while(1){
     //alea=10-alea;
-    if(ptrmem!=NULL)
-      //*ptrmem=val+alea;
-    	*ptrmem=luminosite_environnement;
-    
+    if(ptrmem!=NULL){
+    	//*ptrmem=val+alea;
+    	val=luminosite_environnement;
+    	*ptrmem=val;//+alea
+    }
+    	
     sleep(temps);
   }
 }

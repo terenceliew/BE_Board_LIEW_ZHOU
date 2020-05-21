@@ -6,20 +6,26 @@ int main(){
   // creation d'une board
   Board esp8266;
   // achat des senseurs et actionneurs
-  AnalogSensorTemperature temperature(DELAY,TEMP);
-  AnalogSensorLuminosity luminosity(DELAY);
-  ExternalDigitalSensorButton button(DELAY);
+  //AnalogSensorTemperature temperature(DELAY,TEMP);
+  //AnalogSensorLuminosity luminosity(DELAY);
+  //ExternalDigitalSensorButton button(DELAY);
   //DigitalActuatorLED led1(DELAY);
-  IntelligentDigitalActuatorLED led2(DELAY);
+  //IntelligentDigitalActuatorLED led2(DELAY);
+  Servo servm(DELAY);
+  IndoorButton but1(DELAY);
+  BiometricSensor fp(DELAY);
   I2CActuatorScreen screen;
   
   // branchement des capteurs actionneurs
-  esp8266.pin(1,temperature);
-  esp8266.pin(2,luminosity);
-  esp8266.pin(4,button);
+  // esp8266.pin(1,temperature);
+  // esp8266.pin(2,luminosity);
+  //esp8266.pin(4,button);
+  esp8266.pin(2,servm);
+  esp8266.pin(3,but1);
+  esp8266.pin(4,fp);
  
   //esp8266.pin(0,led1);
-  esp8266.pin(3,led2);
+  //esp8266.pin(3,led2);
   esp8266.i2c(1,screen);
 
   

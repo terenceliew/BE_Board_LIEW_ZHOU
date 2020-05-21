@@ -14,7 +14,9 @@
 #include <thread>
 #include <mutex>
 
-#define DELAY 3
+//#include "application.h"
+
+#define DELAY 1
 #define TEMP 22
 #define HIGH 1
 #define LOW 0
@@ -97,6 +99,8 @@ public:
     void setI2CAddr(int addr, I2C * bus);
 };
 
+
+
 // classe representant une carte arduino
 class Board{
 public:
@@ -112,6 +116,8 @@ public:
   Terminal Serial;
     // threads representant chaque senseur/actionneur sur le bus I2C
   thread *tabthreadbus[MAX_I2C_DEVICES];
+
+  //Door myDoor;
     
 // simulation de la boucle de controle arduino
     void run();
