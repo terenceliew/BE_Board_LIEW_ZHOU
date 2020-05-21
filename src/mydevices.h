@@ -98,12 +98,16 @@ class Servo : public AnalogActuator{
   virtual void run();
 };
 
-//BoutonIndoor
-class IndoorButton : public DigitalSensor{
+//bouton
+class Button : public DigitalSensor{
+private:
+  string nomfichier;
 public:
-  IndoorButton(int d);
+  Button(int d,string nomf);
   virtual void run();
 };
+
+
 
 //BiometricSensor
 class BiometricSensor : public AnalogSensor{

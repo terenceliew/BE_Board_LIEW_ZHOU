@@ -138,20 +138,41 @@ void Servo::run(){
     //   cout<<"ERREUR Servo"<<endl;
     // }
 
-    Angle = (getVal()/100)*360;
+    Angle = (getVal()/100)*180;
 	cout<< "Angle de la porte : "<< Angle<<endl;
 
     sleep(getTemps());
   }
 }
 
-IndoorButton::IndoorButton(int d):DigitalSensor(d){
+// IndoorButton::IndoorButton(int d):DigitalSensor(d){
+// 	setState(OFF);
+// }
+
+// void IndoorButton::run(){
+// 	while(1){
+// 		if (ifstream("indoor.txt")){
+// 			setState(ON);
+// 		}
+// 		else{
+// 			setState(OFF);
+// 		}
+
+// 		*ptrmem = getState();
+	
+// 		sleep(getTemps());	
+// 	}
+
+	
+// }
+
+Button::Button(int d, string nomf):DigitalSensor(d), nomfichier(nomf){
 	setState(OFF);
 }
 
-void IndoorButton::run(){
+void Button::run(){
 	while(1){
-		if (ifstream("indoor.txt")){
+		if (ifstream(nomfichier)){
 			setState(ON);
 		}
 		else{
@@ -173,6 +194,13 @@ BiometricSensor::BiometricSensor(int d):AnalogSensor(d){
 void BiometricSensor::run(){
 	string loadfpstring;
 	while(1){
+		// if (ifstream("setfp.txt")){
+		// 	setState(ON);
+		// }
+		// else{
+		// 	setState(OFF);
+		// }
+
 		loadfpfile.open("loadfp.txt");
 		while(!loadfpfile.eof()){
 			getline(loadfpfile,loadfpstring);

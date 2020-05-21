@@ -20,6 +20,7 @@ public:
 	void set_cmdAngle(int a);
 	void open();
 	void close();
+	//permet de savoir si bouton est appuye
 	int detectIndoor(int val_button);
 };
 
