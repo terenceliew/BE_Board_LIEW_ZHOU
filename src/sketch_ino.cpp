@@ -4,6 +4,7 @@
 
 static Door myDoor;
 static FingerprintSystem fpSys;
+static RFIDSystem rfidSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -14,17 +15,15 @@ void Board::setup(){
   pinMode(2,OUTPUT);
   pinMode(3,INPUT);
   pinMode(4,INPUT);
-  pinMode(5,INPUT);
+  pinMode(5,OUTPUT);
+  pinMode(6,INPUT);
+  pinMode(7,INPUT);
+  pinMode(8,INPUT);
 
-  for(int i=0;i<6;i++){
+  for(int i=0;i<9;i++){
     io[i]=0;
   }
   
-  // pinMode(2,INPUT);
-  // pinMode(4,INPUT);
-
-  //pinMode(0,OUTPUT);
-  // pinMode(3,OUTPUT);
 }
 
 // la boucle de controle arduino
@@ -39,40 +38,76 @@ void Board::loop(){
 
   //static int cpt=0;
   //static int bascule=0;
-   int val_butIndoor; 
+   int val_butIndoor;
+   int val_butOutdoor; 
+   int val_butSetfp;
    int val_fp;
-   int val_setFp;
+   int val_rfid;
    int cmdIndoor;
+   int cmdOutdoor;
    int cmdFp;
+   int cmdRFID;
+   char buf_rfid[100];
+   char buf_fp[100];
 
   //recuperation des valeurs de capteurs
   val_butIndoor = digitalRead(3);
   val_fp = analogRead(4);
+  val_butOutdoor = digitalRead(6);
+  val_rfid = analogRead(7);
+  val_butSetfp = digitalRead(8);
+  
+  /*affichage sur terminal les valeurs des capteurs*/
+  /*FingerprintSensor*/
+  sprintf(buf_fp,"Detected  FingerprintID: %d",val_fp);
+  Serial.println(buf_fp);
 
-  //cout<<"out"<<val_fp<<endl;
-  val_setFp = digitalRead(5);
-  //cout<<"weird"<<val_setFp<<endl;
+  /*rfidSensor*/
+  sprintf(buf_rfid,"Detected  RFID: %d",val_rfid);
+  Serial.println(buf_rfid);
+
   //appel de software
   /*Indoor*/
   cmdIndoor = myDoor.detectIndoor(val_butIndoor);
+  /*Outdoor*/
+  cmdOutdoor = myDoor.detectIndoor(val_butOutdoor);
 
   /*Fingerprint System*/
-  //cout << "hello";
-  fpSys.setFingerprint(val_setFp,val_fp);
+  fpSys.setFingerprint(val_butSetfp,val_fp);
   fpSys.verifyFingerprint(val_fp);
   cmdFp = fpSys.getMatch();
 
+  /*RFID System*/
+  rfidSys.verifyRFID(val_rfid);
+  cmdRFID = rfidSys.getMatch();
+
   /*Choisir la commande*/
-  if(cmdIndoor || cmdFp){
+  /*Commande d'ouverture de la porte*/
+  if(cmdIndoor || cmdFp|| cmdRFID){
     myDoor.open();
+    Serial.println("((Door Open))");
   }
   else{
     myDoor.close();
+    Serial.println("((Door Close))");
   }
+
+  /*Commande de buzzer*/
+  if(cmdOutdoor){
+    myDoor.ringBuzzer();
+    Serial.println("((Buzzer ON))");
+  }else{
+    myDoor.muteBuzzer();
+    Serial.println("((Buzzer OFF))");
+  }
+
 
   //faire la commande
   analogWrite(2,myDoor.get_cmdAngle());
+  analogWrite(5,myDoor.get_cmdBuzzer());
 
+
+  sleep(1);
   //mettre a jour les capteurs
 
 

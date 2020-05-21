@@ -13,12 +13,20 @@ void Door::set_cmdAngle(int a){
 	cmdAngle = a;
 }
 
-/*open*/
+int Door::get_cmdBuzzer(){
+	return cmdBuzzer;
+}
+
+void Door::set_cmdBuzzer(int b){
+	cmdBuzzer = b;
+}
+
+/*open door*/
 void Door::open(){
 	cmdAngle=100;;
 }
 
-/*close*/
+/*close door*/
 void Door::close(){
 	cmdAngle=0;
 }
@@ -32,6 +40,25 @@ int Door::detectIndoor(int val_button){
 		open = 0;
 	}
 	return open;
+}
+
+int Door::detectOutdoor(int val_button){
+	int ring;
+	if(val_button){
+		ring = 1;
+	}
+	else{
+		ring = 0;
+	}
+	return ring;
+}
+
+void Door::ringBuzzer(){
+	cmdBuzzer=80;
+}
+
+void Door::muteBuzzer(){
+	cmdBuzzer=0;
 }
 
 FingerprintSystem::FingerprintSystem():match(0){}
@@ -89,20 +116,35 @@ void FingerprintSystem::setFingerprint(int buttonFp,int newFp){
 			
 	}
 	
-	// savedfpfile.open("savedfp.txt");
-	// while(!savedfpfile.eof()){
-	// 	getline(savedfpfile,savedfpstring);
-		
-	// }
-	// cout<<"after : "<<savedfpstring<<endl;
-	// savedfpfile.close();
-	//savedfpval=stoi(savedfpstring);
-	
-	// if(savedfpval==loadfpval){
-	// 	match=1;
-	// }else{
-	// 	match=0;
-	// }
+}
 
+RFIDSystem::RFIDSystem():match(0){}
+
+int RFIDSystem::getMatch(){
+	return match;
+}
+
+/*verifyRFID*/
+void RFIDSystem::verifyRFID(int loadrfidval){
+	string savedrfidstring;
+	int savedrfidval;
+	fstream savedrfidfile;
+
+	savedrfidfile.open("savedrfid.txt");
+	while(!savedrfidfile.eof()){
+		getline(savedrfidfile,savedrfidstring);
+		
+	}
 	
+	if (!savedrfidstring.empty()){
+		savedrfidval=stoi(savedrfidstring);
+	}
+
+	if(savedrfidval==loadrfidval){
+		match=1;
+	}else{
+		match=0;
+	}
+
+	savedrfidfile.close();
 }
