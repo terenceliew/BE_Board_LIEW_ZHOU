@@ -139,7 +139,7 @@ void Servo::run(){
     // }
 
     Angle = (getVal()/100)*180;
-	cout<< "Angle de la porte : "<< Angle<<endl;
+	//cout<< "Angle de la porte : "<< Angle<<endl;
 
     sleep(getTemps());
   }
@@ -152,9 +152,9 @@ void Buzzer::run(){
   while(1){
     if(ptrmem!=NULL) setVal(*ptrmem);
 
-	  cout<< "Buzzer : "<< getVal()<<endl;
+	  //cout<< "Buzzer : "<< getVal()<<endl;
 
-    sleep(getTemps()*2);//avoid conflit 
+    sleep(getTemps());//avoid conflit 
   }
 }
 
@@ -212,7 +212,7 @@ void BiometricSensor::run(){
 			getline(loadfpfile,loadfpstring);
 			
 		}
-		cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
+		//cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
 
 		setVal(stoi(loadfpstring)); 
 		*ptrmem=getVal();
@@ -234,7 +234,7 @@ void RFIDSensor::run(){
 			getline(loadrfidfile,loadrfidstring);
 			
 		}
-		cout<<"Detected RFID : "<<loadrfidstring<<endl;
+		//cout<<"Detected RFID : "<<loadrfidstring<<endl;
 
 		setVal(stoi(loadrfidstring)); 
 		*ptrmem=getVal();

@@ -31,6 +31,8 @@ void Board::loop(){
   static int cmdOutdoor;
   static int cmdFp;
   static int cmdRFID;
+  char buf_rfid[100];
+  char buf_fp[100];
 
   //recuperation des valeurs de capteurs
   val_but1 = digitalRead(3);
@@ -44,24 +46,33 @@ void Board::loop(){
   cmdOutdoor = myDoor.detectIndoor(val_but2);
   /*Fingerprint System*/
   fpSys.verifyFingerprint(val_fp);
+  sprintf(buf_fp,"Detected  FingerprintID: %d",val_fp);
+  Serial.println(buf_fp);
   cmdFp = fpSys.getMatch();
+
   /*RFID System*/
   rfidSys.verifyRFID(val_rfid);
+  sprintf(buf_rfid,"Detected  RFID: %d",val_rfid);
+  Serial.println(buf_rfid);
   cmdRFID = rfidSys.getMatch();
 
   /*Buzzer*/
   if(cmdOutdoor){
     myDoor.openBuzzer();
+    Serial.println("((Buzzer ON))");
   }else{
     myDoor.closeBuzzer();
+    Serial.println("((Buzzer OFF))");
   }
 
   /*Choisir la commande*/
   if(cmdIndoor || cmdFp || cmdRFID){
     myDoor.open();
+    Serial.println("((Door Open))");
   }
   else{
     myDoor.close();
+    Serial.println("((Door Close))");
   }
 
   //faire la commande
@@ -119,11 +130,11 @@ void Board::loop(){
   //   }
 
   //   cpt++;
-  //   sleep(1);
+     
   // }
 
 
-  
+  sleep(1);
 }
 
 
