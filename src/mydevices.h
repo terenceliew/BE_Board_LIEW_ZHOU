@@ -124,7 +124,11 @@ class OutdoorButton : public DigitalSensor{
     OutdoorButton(int d);
     virtual void run();
 };
-
+class RFIDSensor : public AnalogSensor{
+  public:
+    RFIDSensor(int d);
+    virtual void run();
+};
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
 private:

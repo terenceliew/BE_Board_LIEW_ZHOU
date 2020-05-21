@@ -4,6 +4,7 @@
 
 static Door myDoor;
 static FingerprintSystem fpSys;
+static RFIDSystem rfidSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -16,6 +17,7 @@ void Board::setup(){
   pinMode(4,INPUT);
   pinMode(5,OUTPUT);
   pinMode(6,INPUT);
+  pinMode(7,INPUT);
 }
 
 // la boucle de controle arduino
@@ -24,14 +26,17 @@ void Board::loop(){
   static int val_but1; 
   static int val_but2;
   static int val_fp;
+  static int val_rfid;
   static int cmdIndoor;
   static int cmdOutdoor;
   static int cmdFp;
+  static int cmdRFID;
 
   //recuperation des valeurs de capteurs
   val_but1 = digitalRead(3);
   val_fp = analogRead(4);
   val_but2 = digitalRead(6);
+  val_rfid = analogRead(7);
 
   //appel de software
   /*Indoor*/
@@ -40,6 +45,9 @@ void Board::loop(){
   /*Fingerprint System*/
   fpSys.verifyFingerprint(val_fp);
   cmdFp = fpSys.getMatch();
+  /*RFID System*/
+  rfidSys.verifyRFID(val_rfid);
+  cmdRFID = rfidSys.getMatch();
 
   /*Buzzer*/
   if(cmdOutdoor){
@@ -49,7 +57,7 @@ void Board::loop(){
   }
 
   /*Choisir la commande*/
-  if(cmdIndoor || cmdFp){
+  if(cmdIndoor || cmdFp || cmdRFID){
     myDoor.open();
   }
   else{

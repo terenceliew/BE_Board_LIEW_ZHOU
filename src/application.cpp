@@ -85,3 +85,32 @@ void FingerprintSystem::verifyFingerprint(int loadfpval){
 
 	savedfpfile.close();
 }
+
+RFIDSystem::RFIDSystem():match(0){}
+
+int RFIDSystem::getMatch(){
+	return match;
+}
+
+/*verifyRFID*/
+void RFIDSystem::verifyRFID(int loadrfidval){
+	string savedrfidstring;
+	int savedrfidval;
+	fstream savedrfidfile;
+
+	savedrfidfile.open("savedrfid.txt");
+	while(!savedrfidfile.eof()){
+		getline(savedrfidfile,savedrfidstring);
+		
+	}
+	
+	savedrfidval=stoi(savedrfidstring);
+	
+	if(savedrfidval==loadrfidval){
+		match=1;
+	}else{
+		match=0;
+	}
+
+	savedrfidfile.close();
+}

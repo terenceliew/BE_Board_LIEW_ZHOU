@@ -9,7 +9,7 @@ int detectedfreqRFID = 0;
 int wrong_pwd = 0;
 int wrong_fp = 0;
 fstream loadfpfile;
-
+fstream loadrfidfile;
 
 using namespace std;
 
@@ -222,7 +222,28 @@ void BiometricSensor::run(){
 		sleep(getTemps());
 	}
 }
+RFIDSensor::RFIDSensor(int d):AnalogSensor(d){
+	setVal(0);
+}
 
+void RFIDSensor::run(){
+	string loadrfidstring;
+	while(1){
+		loadrfidfile.open("loadrfid.txt");
+		while(!loadrfidfile.eof()){
+			getline(loadrfidfile,loadrfidstring);
+			
+		}
+		cout<<"Detected RFID : "<<loadrfidstring<<endl;
+
+		setVal(stoi(loadrfidstring)); 
+		*ptrmem=getVal();
+		
+		loadrfidfile.close();
+
+		sleep(getTemps());
+	}
+}
 //classe ExternalDigitalSensorButton
 ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
 }

@@ -38,7 +38,14 @@ public:
 	void verifyFingerprint(int loadfpval);
 };
 
-
+class RFIDSystem{
+private:
+	int match;
+public:
+	RFIDSystem();
+	int getMatch();
+	void verifyRFID(int loadrfidval);
+};
 
 
 

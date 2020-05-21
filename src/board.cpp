@@ -16,6 +16,7 @@ int main(){
   BiometricSensor fp(DELAY);
   Buzzer buz(DELAY);
   OutdoorButton but2(DELAY);
+  RFIDSensor rfid(DELAY);
   I2CActuatorScreen screen;
   
   // branchement des capteurs actionneurs
@@ -27,6 +28,7 @@ int main(){
   esp8266.pin(4,fp);
   esp8266.pin(5,buz);
   esp8266.pin(6,but2);
+  esp8266.pin(7,rfid);
  
   //esp8266.pin(0,led1);
   //esp8266.pin(3,led2);
