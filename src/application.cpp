@@ -12,10 +12,17 @@ int Door::get_cmdAngle(){
 void Door::set_cmdAngle(int a){
 	cmdAngle = a;
 }
+int Door::get_cmdBuzzer(){
+	return cmdBuzzer;
+}
+
+void Door::set_cmdBuzzer(int b){
+	cmdBuzzer = b;
+}
 
 /*open*/
 void Door::open(){
-	cmdAngle=100;;
+	cmdAngle=100;
 }
 
 /*close*/
@@ -32,6 +39,22 @@ int Door::detectIndoor(int val_button){
 		open = 0;
 	}
 	return open;
+}
+int Door::detectOutdoor(int val_button){
+	int open;
+	if(val_button){
+		open = 1;
+	}
+	else{
+		open = 0;
+	}
+	return open;
+}
+void Door::openBuzzer(){
+	cmdBuzzer=80;
+}
+void Door::closeBuzzer(){
+	cmdBuzzer=0;
 }
 
 FingerprintSystem::FingerprintSystem():match(0){}

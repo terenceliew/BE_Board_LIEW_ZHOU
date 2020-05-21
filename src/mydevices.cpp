@@ -138,12 +138,26 @@ void Servo::run(){
     //   cout<<"ERREUR Servo"<<endl;
     // }
 
-    Angle = (getVal()/100)*360;
+    Angle = (getVal()/100)*180;
 	cout<< "Angle de la porte : "<< Angle<<endl;
 
     sleep(getTemps());
   }
 }
+//Class Buzzer
+Buzzer::Buzzer(int d):AnalogActuator(d){
+  setVal(0);
+}
+void Buzzer::run(){
+  while(1){
+    if(ptrmem!=NULL) setVal(*ptrmem);
+
+	  cout<< "Buzzer : "<< getVal()<<endl;
+
+    sleep(getTemps()*2);//avoid conflit 
+  }
+}
+
 
 IndoorButton::IndoorButton(int d):DigitalSensor(d){
 	setState(OFF);
@@ -152,6 +166,26 @@ IndoorButton::IndoorButton(int d):DigitalSensor(d){
 void IndoorButton::run(){
 	while(1){
 		if (ifstream("indoor.txt")){
+			setState(ON);
+		}
+		else{
+			setState(OFF);
+		}
+
+		*ptrmem = getState();
+	
+		sleep(getTemps());	
+	}
+
+	
+}
+OutdoorButton::OutdoorButton(int d):DigitalSensor(d){
+	setState(OFF);
+}
+
+void OutdoorButton::run(){
+	while(1){
+		if (ifstream("outdoor.txt")){
 			setState(ON);
 		}
 		else{
