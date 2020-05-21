@@ -17,9 +17,19 @@ private:
 public:
 	Door();
 	int get_cmdAngle();
+	void set_cmdAngle(int a);
 	void open();
 	void close();
 	void detectIndoor(int val_button);
+};
+
+class FingerprintSystem{
+private:
+	int match;
+public:
+	FingerprintSystem();
+	int getMatch();
+	void verifyFingerprint(int loadfpval);
 };
 
 

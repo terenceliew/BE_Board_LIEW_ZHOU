@@ -5,10 +5,10 @@
 int luminosite_environnement = 200;
 int Force = 0;
 int Angle = 0;
-int loadfpfile = 0;
 int detectedfreqRFID = 0;
 int wrong_pwd = 0;
 int wrong_fp = 0;
+fstream loadfpfile;
 
 
 using namespace std;
@@ -31,6 +31,19 @@ void DigitalSensor::setState(int s){
 }
 int DigitalSensor::getState(){
   return state;
+}
+
+//AnalogSensor
+AnalogSensor::AnalogSensor(int d):Sensor(d),val(0),alea(0){
+}
+void AnalogSensor::setVal(int v){
+  val = v;
+}
+int AnalogSensor::getVal(){
+  return val;
+}
+void AnalogSensor::setAlea(int a){
+	alea = a;
 }
 
 
@@ -146,9 +159,34 @@ void IndoorButton::run(){
 		}
 
 		*ptrmem = getState();
+	
+		sleep(getTemps());	
 	}
 
-	sleep(getTemps());
+	
+}
+
+BiometricSensor::BiometricSensor(int d):AnalogSensor(d){
+	setVal(0);
+}
+
+void BiometricSensor::run(){
+	string loadfpstring;
+	while(1){
+		loadfpfile.open("loadfp.txt");
+		while(!loadfpfile.eof()){
+			getline(loadfpfile,loadfpstring);
+			
+		}
+		cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
+
+		setVal(stoi(loadfpstring)); 
+		*ptrmem=getVal();
+		
+		loadfpfile.close();
+
+		sleep(getTemps());
+	}
 }
 
 //classe ExternalDigitalSensorButton
@@ -168,10 +206,12 @@ void ExternalDigitalSensorButton::run(){
 		}
 
 		*ptrmem = state;
+
+		sleep(temps);
 	}
 
 
-	sleep(temps);
+	
 
 }
 

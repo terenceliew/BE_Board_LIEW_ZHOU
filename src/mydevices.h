@@ -12,7 +12,7 @@
 extern int luminosite_environnement;
 extern int Force;
 extern int Angle;
-extern int loadfpfile;
+extern fstream loadfpfile;
 extern int detectedfreqRFID;
 extern int wrong_pwd;
 extern int wrong_fp;
@@ -33,6 +33,17 @@ class DigitalSensor: public Sensor{
     DigitalSensor(int d);
     void setState(int s);
     int getState();
+};
+
+class AnalogSensor: public Sensor{
+  private :
+    int val;
+    int alea;
+  public :
+    AnalogSensor(int d);
+    void setVal(int val);
+    int getVal();
+    void setAlea(int a);
 };
 
 
@@ -91,6 +102,13 @@ class Servo : public AnalogActuator{
 class IndoorButton : public DigitalSensor{
 public:
   IndoorButton(int d);
+  virtual void run();
+};
+
+//BiometricSensor
+class BiometricSensor : public AnalogSensor{
+public:
+  BiometricSensor(int d);
   virtual void run();
 };
 

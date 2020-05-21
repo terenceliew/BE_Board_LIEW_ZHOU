@@ -3,6 +3,7 @@
 #include "application.h"
 
 static Door myDoor;
+static FingerprintSystem fpSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -11,8 +12,8 @@ void Board::setup(){
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
   pinMode(1,INPUT);
   pinMode(2,OUTPUT);
-  pinMode(3,INPUT);
-  
+  //pinMode(3,INPUT);
+  pinMode(4,INPUT);
 
 
   
@@ -36,14 +37,26 @@ void Board::loop(){
 
   //static int cpt=0;
   //static int bascule=0;
-  static int val_but1; 
-
+  //static int val_but1; 
+  static int val_fp;
 
   //recuperation des valeurs de capteurs
-  val_but1 = digitalRead(3);
+  //val_but1 = digitalRead(3);
+  val_fp = analogRead(4);
 
   //appel de software
-  myDoor.detectIndoor(val_but1);
+  /*Indoor*/
+  //myDoor.detectIndoor(val_but1);
+
+  /*Fingerprint System*/
+  fpSys.verifyFingerprint(val_fp);
+  
+  if(fpSys.getMatch()){
+    myDoor.open();
+  }
+  else{
+    myDoor.close();
+  }
 
   //faire la commande
   analogWrite(2,myDoor.get_cmdAngle());
