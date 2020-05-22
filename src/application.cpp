@@ -31,27 +31,6 @@ void Door::close(){
 	cmdAngle=0;
 }
 
-int Door::detectIndoor(int val_button){
-	int open;
-	if(val_button){
-		open = 1;
-	}
-	else{
-		open = 0;
-	}
-	return open;
-}
-
-int Door::detectOutdoor(int val_button){
-	int ring;
-	if(val_button){
-		ring = 1;
-	}
-	else{
-		ring = 0;
-	}
-	return ring;
-}
 
 void Door::ringBuzzer(){
 	cmdBuzzer=80;
@@ -73,7 +52,6 @@ char* Door::get_msgIndoor(){
 char* Door::get_msgOutdoor(){
 	return msgOutdoor;
 }
-
 
 void Door::screenIndoor(){
 	if(!cmdAngle){
@@ -112,6 +90,43 @@ void Door::screenOutdoor(){
 	}
 }
 
+
+void Door::run(int cmdBA,int val_butIndoor,int val_butOutdoor, int cmdFp, int val_butSetfp, int cmdRFID){
+	
+
+
+	/*Commande d'ouverture de la porte*/
+	if(!cmdBA){
+	    if(val_butIndoor || (cmdFp && !val_butSetfp) || cmdRFID){
+	      open();
+	    }
+	    else{
+	      close();
+	    }
+	}
+	else{
+	    close();
+	}
+	  
+
+	/*Commande de buzzer*/
+	if(cmdBA){
+	  alarmBuzzer();
+    }else if(val_butOutdoor){
+	  ringBuzzer();
+	}
+	else{
+	  muteBuzzer();
+ 	}
+
+ 	/*Commande d'affichage*/
+ 	screenIndoor();
+  	screenOutdoor();
+}
+
+
+
+
 FingerprintSystem::FingerprintSystem():match(0){}
 
 int FingerprintSystem::getMatch(){
@@ -129,44 +144,46 @@ void FingerprintSystem::verifyFingerprint(int loadfpval){
 		getline(savedfpfile,savedfpstring);
 		
 	}
-	//cout<<"savedstring:"<<savedfpstring<<endl;
+	
 	if (!savedfpstring.empty()){
-		//cout<<"ho"<<endl;
+		
 		savedfpval=stoi(savedfpstring);
 	}
-	//cout<<"savedvalue:"<<savedfpval<<endl;
+	
 	
 	if(savedfpval==loadfpval){
 		match=1;
 	}else{
 		match=0;
 	}
-	//cout<<"match"<<match<<endl;
+	
 	savedfpfile.close();
 }
 
 /*set new Fingerprint*/
 void FingerprintSystem::setFingerprint(int buttonFp,int newFp){
 	string savedfpstring;
-	//int savedfpval;
+
 	fstream savedfpfile;
 
-	//cout<<"hi"<<newFp<<endl;
+
 	if(buttonFp){
-		// cout<<"newfp :"<<to_string(newFp)<<endl;
-		
-			//cout<<"helllllooooo"<<endl;
+	
 		savedfpfile.open("savedfp.txt",ios::out | ios::trunc); //delete content before open
 
 		savedfpfile << to_string(newFp);
 		
 		
 		savedfpfile.close();
-			// getline(savedfpfile,savedfpstring);
-			// cout<<"saved : "<<savedfpstring<<endl;
+			
 			
 	}
 	
+}
+
+void FingerprintSystem::run(int val_butSetfp,int val_fp){
+	setFingerprint(val_butSetfp,val_fp);
+    verifyFingerprint(val_fp);
 }
 
 RFIDSystem::RFIDSystem():match(0){}

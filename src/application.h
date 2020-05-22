@@ -9,13 +9,13 @@
 
 #define FORCELIM 88
 
-// #include "core_simulation.h"
-// #include "mydevices.h"
 
 using namespace std;
 
 class Door {
 private:
+
+
 	int cmdAngle;
 	int cmdBuzzer;
 	char msgIndoor[100];
@@ -31,14 +31,13 @@ public:
 	void set_cmdBuzzer(int b);
 	void open();
 	void close();
-	//permet de savoir si bouton est appuye
-	int detectIndoor(int val_button);
-	int detectOutdoor(int val_button);
+
 	void ringBuzzer();
 	void alarmBuzzer();
 	void muteBuzzer();
 	void screenIndoor();
 	void screenOutdoor();
+	void run(int cmdBA,int cmdIndoor,int cmdOutdoor, int cmdFp, int val_butSetfp, int cmdRFID);
 };
 
 class FingerprintSystem{
@@ -49,6 +48,7 @@ public:
 	int getMatch();
 	void verifyFingerprint(int loadfpval);
 	void setFingerprint(int buttonFp, int val_fp);
+	void run(int val_butSetfp,int val_fp);
 };
 
 
