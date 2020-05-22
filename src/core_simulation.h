@@ -14,7 +14,7 @@
 #include <thread>
 #include <mutex>
 
-//#include "application.h"
+#include "application.h"
 
 #define DELAY 1
 #define TEMP 22
@@ -25,7 +25,7 @@
 #define MAX_IO_PIN 12
 #define ON 1
 #define OFF 0
-#define FORCELIM 88
+
 
 using namespace std;
 
@@ -118,10 +118,10 @@ public:
     // threads representant chaque senseur/actionneur sur le bus I2C
   thread *tabthreadbus[MAX_I2C_DEVICES];
 
-  // Door myDoor;
-  // FingerprintSystem fpSys;
-  // RFIDSystem rfidSys;
-  // BurglarAlertSystem baSys;
+  Door myDoor;
+  FingerprintSystem fpSys;
+  RFIDSystem rfidSys;
+  BurglarAlertSystem baSys;
     
 // simulation de la boucle de controle arduino
     void run();

@@ -6,9 +6,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <fstream>
-#include "core_simulation.h"
-#include "mydevices.h"
 
+#define FORCELIM 88
+
+// #include "core_simulation.h"
+// #include "mydevices.h"
+
+using namespace std;
 
 class Door {
 private:

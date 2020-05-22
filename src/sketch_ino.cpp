@@ -1,12 +1,8 @@
 #include <unistd.h>
 #include <vector>
 #include "core_simulation.h"
+#include "mydevices.h"
 #include "application.h"
-
-static Door myDoor;
-static FingerprintSystem fpSys;
-static RFIDSystem rfidSys;
-static BurglarAlertSystem baSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -103,6 +99,7 @@ void Board::loop(){
   /*forceSensor*/
   sprintf(buf_force,"Detected  Force: %d",val_fsensor);
 
+  Serial.println("-----------------------------------------");
   /*affichage des buffers dans le vecteur*/
   for(long unsigned int i=0;i<vecbuf.size();i++){
     Serial.println(vecbuf[i]);
