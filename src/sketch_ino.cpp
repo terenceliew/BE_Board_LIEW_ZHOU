@@ -57,6 +57,9 @@ void Board::loop(){
    char buf_fp[100];
    char buf_force[100];
 
+   char buf_angle[100];
+   char buf_buzzer[100];
+
   //recuperation des valeurs de capteurs
   val_butIndoor = digitalRead(3);
   val_fp = analogRead(4);
@@ -101,20 +104,17 @@ void Board::loop(){
   /*Commande d'ouverture de la porte*/
   if(cmdIndoor || cmdFp|| cmdRFID){
     myDoor.open();
-    Serial.println("((Door Open))");
   }
   else{
     myDoor.close();
-    Serial.println("((Door Close))");
   }
+  
 
   /*Commande de buzzer*/
   if(cmdOutdoor || cmdBA){
     myDoor.ringBuzzer();
-    Serial.println("((Buzzer ON))");
   }else{
     myDoor.muteBuzzer();
-    Serial.println("((Buzzer OFF))");
   }
 
 
@@ -122,11 +122,32 @@ void Board::loop(){
   analogWrite(2,myDoor.get_cmdAngle());
   analogWrite(5,myDoor.get_cmdBuzzer());
 
+  /*Affichage valeur d'actuator*/
+  /*Door (Servo)*/
+  sprintf(buf_angle,"Angle : %d",Angle);
+  Serial.println(buf_angle);
+
+  /*Buzzer*/
+  sprintf(buf_buzzer,"Frequence Buzzer : %d MHz",freqBuzzer);
+  Serial.println(buf_buzzer);
+
+  Serial.println("-----------------------------------------");
+
+
+  // if(cpt%5==0){
+  //     // tous les 5 fois on affiche sur l ecran la luminosite
+  //   sprintf(buf_fp,"%d",val_fp);
+  //   bus.write(1,buf_fp,100);
+  // }
 
   sleep(1);
   //mettre a jour les capteurs
 
 
+  // Serial.println("((Door Open))");
+  // Serial.println("((Door Close))");
+  // Serial.println("((Buzzer ON))");
+  // Serial.println("((Buzzer OFF))");
 
   //int i=0;
 

@@ -15,6 +15,7 @@ extern int Angle;
 extern fstream loadfpfile;
 extern fstream loadrfidfile;
 extern int detectedfreqRFID;
+extern int freqBuzzer;
 extern int wrong_pwd;
 extern int wrong_fp;
 

@@ -6,6 +6,7 @@ int luminosite_environnement = 200;
 int Force = 0;
 int Angle = 0;
 int detectedfreqRFID = 0;
+int freqBuzzer = 0; //en MHz
 int wrong_pwd = 0;
 int wrong_fp = 0;
 fstream loadfpfile;
@@ -148,6 +149,12 @@ void Buzzer::run(){
   while(1){
     if(ptrmem!=NULL) setVal(*ptrmem);
 
+    if (getVal()){
+    	freqBuzzer=400+getVal();
+    }else{
+    	freqBuzzer = 0;
+    }
+    //freqBuzzer = floor(((double)getVal()/100)*500); //frequence en MHz
 	  //cout<< "Buzzer : "<< getVal()<<endl;
 
     sleep(getTemps());//avoid conflit 
