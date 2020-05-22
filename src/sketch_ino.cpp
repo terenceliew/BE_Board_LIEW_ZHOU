@@ -5,6 +5,7 @@
 static Door myDoor;
 static FingerprintSystem fpSys;
 static RFIDSystem rfidSys;
+static BurglarAlertSystem baSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -19,8 +20,9 @@ void Board::setup(){
   pinMode(6,INPUT);
   pinMode(7,INPUT);
   pinMode(8,INPUT);
+  pinMode(9,INPUT);
 
-  for(int i=0;i<9;i++){
+  for(int i=0;i<10;i++){
     io[i]=0;
   }
   
@@ -43,12 +45,17 @@ void Board::loop(){
    int val_butSetfp;
    int val_fp;
    int val_rfid;
+   int val_fsensor;
+
    int cmdIndoor;
    int cmdOutdoor;
    int cmdFp;
    int cmdRFID;
+   int cmdBA;
+   
    char buf_rfid[100];
    char buf_fp[100];
+   char buf_force[100];
 
   //recuperation des valeurs de capteurs
   val_butIndoor = digitalRead(3);
@@ -56,6 +63,7 @@ void Board::loop(){
   val_butOutdoor = digitalRead(6);
   val_rfid = analogRead(7);
   val_butSetfp = digitalRead(8);
+  val_fsensor = analogRead(9);
   
   /*affichage sur terminal les valeurs des capteurs*/
   /*FingerprintSensor*/
@@ -65,6 +73,10 @@ void Board::loop(){
   /*rfidSensor*/
   sprintf(buf_rfid,"Detected  RFID: %d",val_rfid);
   Serial.println(buf_rfid);
+
+  /*forceSensor*/
+  sprintf(buf_force,"Detected  Force: %d",val_fsensor);
+  Serial.println(buf_force);
 
   //appel de software
   /*Indoor*/
@@ -81,6 +93,10 @@ void Board::loop(){
   rfidSys.verifyRFID(val_rfid);
   cmdRFID = rfidSys.getMatch();
 
+  /*RFID System*/
+  baSys.run(val_fsensor);
+  cmdBA = baSys.getAlert();
+
   /*Choisir la commande*/
   /*Commande d'ouverture de la porte*/
   if(cmdIndoor || cmdFp|| cmdRFID){
@@ -93,7 +109,7 @@ void Board::loop(){
   }
 
   /*Commande de buzzer*/
-  if(cmdOutdoor){
+  if(cmdOutdoor || cmdBA){
     myDoor.ringBuzzer();
     Serial.println("((Buzzer ON))");
   }else{

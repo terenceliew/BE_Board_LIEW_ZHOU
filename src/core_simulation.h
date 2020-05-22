@@ -25,6 +25,7 @@
 #define MAX_IO_PIN 12
 #define ON 1
 #define OFF 0
+#define FORCELIM 88
 
 using namespace std;
 

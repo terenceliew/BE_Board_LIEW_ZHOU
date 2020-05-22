@@ -18,6 +18,7 @@ int main(){
   Button butOutdoor (DELAY, "outdoor.txt");
   Buzzer buz(DELAY);
   RFIDSensor rfid(DELAY);
+  ForceSensor fsensor(DELAY);
   I2CActuatorScreen screen;
   
   // branchement des capteurs actionneurs
@@ -31,6 +32,7 @@ int main(){
   esp8266.pin(6,butOutdoor);
   esp8266.pin(7,rfid);
   esp8266.pin(8,setFp);
+  esp8266.pin(9,fsensor);
   
 
   //esp8266.pin(0,led1);

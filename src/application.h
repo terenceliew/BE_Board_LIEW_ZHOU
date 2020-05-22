@@ -51,4 +51,13 @@ public:
 };
 
 
+class BurglarAlertSystem{
+private:
+	int alert;
+public:
+	BurglarAlertSystem();
+	int getAlert();
+	void run(int forceval);
+};
+
 #endif

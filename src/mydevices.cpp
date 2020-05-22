@@ -10,6 +10,7 @@ int wrong_pwd = 0;
 int wrong_fp = 0;
 fstream loadfpfile;
 fstream loadrfidfile;
+fstream forcefile;
 
 
 using namespace std;
@@ -131,13 +132,6 @@ Servo::Servo(int d):AnalogActuator(d){
 void Servo::run(){
   while(1){
     if(ptrmem!=NULL) setVal(*ptrmem);
-    // if(getVal()>=70){
-    //   cout<<"Door OPEN"<<endl;
-    // }else if(getVal()<70){
-    //   cout<<"Door CLOSE"<<endl;
-    // }else{
-    //   cout<<"ERREUR Servo"<<endl;
-    // }
 
     Angle = (getVal()/100)*180;
 	//cout<< "Angle de la porte : "<< Angle<<endl;
@@ -160,26 +154,6 @@ void Buzzer::run(){
   }
 }
 
-// IndoorButton::IndoorButton(int d):DigitalSensor(d){
-// 	setState(OFF);
-// }
-
-// void IndoorButton::run(){
-// 	while(1){
-// 		if (ifstream("indoor.txt")){
-// 			setState(ON);
-// 		}
-// 		else{
-// 			setState(OFF);
-// 		}
-
-// 		*ptrmem = getState();
-	
-// 		sleep(getTemps());	
-// 	}
-
-	
-// }
 
 Button::Button(int d, string nomf):DigitalSensor(d), nomfichier(nomf){
 	setState(OFF);
@@ -216,9 +190,11 @@ void BiometricSensor::run(){
 			
 		}
 		//cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
-
-		setVal(stoi(loadfpstring)); 
-		*ptrmem=getVal();
+		if(!loadfpstring.empty()){
+			setVal(stoi(loadfpstring));
+			*ptrmem=getVal(); 
+		}
+		
 		
 		loadfpfile.close();
 
@@ -239,11 +215,41 @@ void RFIDSensor::run(){
 			
 		}
 		//cout<<"Detected RFID : "<<loadrfidstring<<endl;
-
-		setVal(stoi(loadrfidstring)); 
-		*ptrmem=getVal();
+		if(!loadrfidstring.empty()){
+			setVal(stoi(loadrfidstring));
+			*ptrmem=getVal(); 
+		}
+		
+		
 		
 		loadrfidfile.close();
+
+		sleep(getTemps());
+	}
+}
+
+ForceSensor::ForceSensor(int d):AnalogSensor(d){
+	setVal(0);
+}
+
+void ForceSensor::run(){
+	string forcestring;
+	while(1){
+
+		forcefile.open("force.txt");
+		while(!forcefile.eof()){
+			getline(forcefile,forcestring);
+			
+		}
+		//cout<<"Detected Force : "<<forcestring<<endl;
+		if(!forcestring.empty()){
+			setVal(stoi(forcestring)); 
+			*ptrmem=getVal();
+		}
+		
+		
+		
+		forcefile.close();
 
 		sleep(getTemps());
 	}

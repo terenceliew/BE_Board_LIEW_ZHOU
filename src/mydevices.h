@@ -131,6 +131,13 @@ class RFIDSensor : public AnalogSensor{
     virtual void run();
 };
 
+//ForceSensor
+class ForceSensor : public AnalogSensor{
+public:
+  ForceSensor(int d);
+  virtual void run();
+};
+
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
 private:

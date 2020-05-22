@@ -148,3 +148,20 @@ void RFIDSystem::verifyRFID(int loadrfidval){
 
 	savedrfidfile.close();
 }
+
+BurglarAlertSystem::BurglarAlertSystem():alert(0){}
+
+int BurglarAlertSystem::getAlert(){
+	return alert;
+}
+
+/*verifyFingerprint*/
+void BurglarAlertSystem::run(int forceval){
+
+	if(forceval>FORCELIM){
+		alert=1;
+	}else{
+		alert=0;
+	}
+	
+}
