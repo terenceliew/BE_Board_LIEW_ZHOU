@@ -103,48 +103,6 @@ public:
 
 
 
-// classe representant une carte arduino
-class Board{
-public:
- // valeur sur les pin
-  unsigned short io[MAX_IO_PIN];
-    // pin d'entree ou de sortie
-  enum typeio stateio[MAX_IO_PIN];
-    // threads representant chaque senseur/actionneur sur le pins analogique et digitale
-  thread *tabthreadpin[MAX_IO_PIN];
-    // representation du bus I2C
-  I2C bus;
-    // representation de la liaison terminal
-  Terminal Serial;
-    // threads representant chaque senseur/actionneur sur le bus I2C
-  thread *tabthreadbus[MAX_I2C_DEVICES];
-
-  // Door myDoor;
-  // FingerprintSystem fpSys;
-  // RFIDSystem rfidSys;
-  // BurglarAlertSystem baSys;
-    
-// simulation de la boucle de controle arduino
-    void run();
-  // accroachage d'un senseur/actionneur à une pin
-    void pin(int p, Device& s);
-    // accroachage d'un senseur/actionneur à une adresse du bus I2C
-      void i2c(int addr,Device& dev);
- // fonction arduino : configuration d'une pin en entree ou en sortie
-    void pinMode(int p,enum typeio t);
-  // fonction arduino : ecriture HIGH ou LOW sur une pin
-    void digitalWrite(int i, int l);
-    // fonction arduino : lecture digital sur une pin
-    int digitalRead(int i);
-     // fonction arduino : lecture analogique sur une pin
-    void analogWrite(int i, int l);
-   // fonction arduino : ecriture analogique sur une pin
-    int analogRead(int i);
-  // fonction arduino : initialisation de la carte arduino
-  void setup();
-    // fonction arduino : boucle de controle de la carte arduino
-  void loop();//Door myDoor, FingerprintSystem fpSys, RFIDSystem rfidSys, BurglarAlertSystem baSys
-};
 
 /////////////////////////////////
 class Door {
@@ -202,6 +160,50 @@ public:
   BurglarAlertSystem();
   int getAlert();
   void run(int forceval);
+};
+///////
+
+// classe representant une carte arduino
+class Board{
+public:
+ // valeur sur les pin
+  unsigned short io[MAX_IO_PIN];
+    // pin d'entree ou de sortie
+  enum typeio stateio[MAX_IO_PIN];
+    // threads representant chaque senseur/actionneur sur le pins analogique et digitale
+  thread *tabthreadpin[MAX_IO_PIN];
+    // representation du bus I2C
+  I2C bus;
+    // representation de la liaison terminal
+  Terminal Serial;
+    // threads representant chaque senseur/actionneur sur le bus I2C
+  thread *tabthreadbus[MAX_I2C_DEVICES];
+
+  Door myDoor;
+  FingerprintSystem fpSys;
+  RFIDSystem rfidSys;
+  BurglarAlertSystem baSys;
+    
+// simulation de la boucle de controle arduino
+    void run();
+  // accroachage d'un senseur/actionneur à une pin
+    void pin(int p, Device& s);
+    // accroachage d'un senseur/actionneur à une adresse du bus I2C
+      void i2c(int addr,Device& dev);
+ // fonction arduino : configuration d'une pin en entree ou en sortie
+    void pinMode(int p,enum typeio t);
+  // fonction arduino : ecriture HIGH ou LOW sur une pin
+    void digitalWrite(int i, int l);
+    // fonction arduino : lecture digital sur une pin
+    int digitalRead(int i);
+     // fonction arduino : lecture analogique sur une pin
+    void analogWrite(int i, int l);
+   // fonction arduino : ecriture analogique sur une pin
+    int analogRead(int i);
+  // fonction arduino : initialisation de la carte arduino
+  void setup();
+    // fonction arduino : boucle de controle de la carte arduino
+  void loop();//Door myDoor, FingerprintSystem fpSys, RFIDSystem rfidSys, BurglarAlertSystem baSys
 };
 
 #endif
