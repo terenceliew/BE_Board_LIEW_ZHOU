@@ -1,13 +1,12 @@
 #include <unistd.h>
 #include <vector>
 #include "core_simulation.h"
-#include "mydevices.h"
-//#include "application.h"
+#include "application.h"
 
-// static Door myDoor;
-// static FingerprintSystem fpSys;
-// static RFIDSystem rfidSys;
-// static BurglarAlertSystem baSys;
+static Door myDoor;
+static FingerprintSystem fpSys;
+static RFIDSystem rfidSys;
+static BurglarAlertSystem baSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
