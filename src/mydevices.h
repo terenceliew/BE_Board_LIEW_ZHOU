@@ -94,41 +94,24 @@ class LED : public DigitalActuator{
 //Class Servo
 class Servo : public AnalogActuator{
   public :
-    Servo(int d);
-    virtual void run();
-};
-//Class Buzzer
-class Buzzer : public AnalogActuator{
-  public :
-    Buzzer(int d);
-    virtual void run();
-
+  Servo(int d);
+  virtual void run();
 };
 
 //BoutonIndoor
 class IndoorButton : public DigitalSensor{
-  public:
-    IndoorButton(int d);
-    virtual void run();
+public:
+  IndoorButton(int d);
+  virtual void run();
 };
 
 //BiometricSensor
 class BiometricSensor : public AnalogSensor{
-  public:
-    BiometricSensor(int d);
-    virtual void run();
+public:
+  BiometricSensor(int d);
+  virtual void run();
 };
-//OutdoorButton
-class OutdoorButton : public DigitalSensor{
-  public:
-    OutdoorButton(int d);
-    virtual void run();
-};
-class RFIDSensor : public AnalogSensor{
-  public:
-    RFIDSensor(int d);
-    virtual void run();
-};
+
 // capteur de bouton externe
 class ExternalDigitalSensorButton: public Device {
 private:

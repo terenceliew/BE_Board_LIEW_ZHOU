@@ -4,7 +4,6 @@
 
 static Door myDoor;
 static FingerprintSystem fpSys;
-static RFIDSystem rfidSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
@@ -15,69 +14,56 @@ void Board::setup(){
   pinMode(2,OUTPUT);
   pinMode(3,INPUT);
   pinMode(4,INPUT);
-  pinMode(5,OUTPUT);
-  pinMode(6,INPUT);
-  pinMode(7,INPUT);
+
+
+  
+  
+  // pinMode(2,INPUT);
+  // pinMode(4,INPUT);
+
+  //pinMode(0,OUTPUT);
+  // pinMode(3,OUTPUT);
 }
 
 // la boucle de controle arduino
 void Board::loop(){
+  
+  // char buf_temperature[100];
+  // char buf_lum[100];
+  // char buf_bouton[100];
+  // int val_temp;
+  // int val_lum;
+  // int val_bouton;
 
+  //static int cpt=0;
+  //static int bascule=0;
   static int val_but1; 
-  static int val_but2;
   static int val_fp;
-  static int val_rfid;
   static int cmdIndoor;
-  static int cmdOutdoor;
   static int cmdFp;
-  static int cmdRFID;
-  char buf_rfid[100];
-  char buf_fp[100];
 
   //recuperation des valeurs de capteurs
   val_but1 = digitalRead(3);
   val_fp = analogRead(4);
-  val_but2 = digitalRead(6);
-  val_rfid = analogRead(7);
 
   //appel de software
   /*Indoor*/
   cmdIndoor = myDoor.detectIndoor(val_but1);
-  cmdOutdoor = myDoor.detectIndoor(val_but2);
+
   /*Fingerprint System*/
   fpSys.verifyFingerprint(val_fp);
-  sprintf(buf_fp,"Detected  FingerprintID: %d",val_fp);
-  Serial.println(buf_fp);
   cmdFp = fpSys.getMatch();
 
-  /*RFID System*/
-  rfidSys.verifyRFID(val_rfid);
-  sprintf(buf_rfid,"Detected  RFID: %d",val_rfid);
-  Serial.println(buf_rfid);
-  cmdRFID = rfidSys.getMatch();
-
-  /*Buzzer*/
-  if(cmdOutdoor){
-    myDoor.openBuzzer();
-    Serial.println("((Buzzer ON))");
-  }else{
-    myDoor.closeBuzzer();
-    Serial.println("((Buzzer OFF))");
-  }
-
   /*Choisir la commande*/
-  if(cmdIndoor || cmdFp || cmdRFID){
+  if(cmdIndoor || cmdFp){
     myDoor.open();
-    Serial.println("((Door Open))");
   }
   else{
     myDoor.close();
-    Serial.println("((Door Close))");
   }
 
   //faire la commande
   analogWrite(2,myDoor.get_cmdAngle());
-  analogWrite(5,myDoor.get_cmdBuzzer());
 
   //mettre a jour les capteurs
 
@@ -130,11 +116,11 @@ void Board::loop(){
   //   }
 
   //   cpt++;
-     
+  //   sleep(1);
   // }
 
 
-  sleep(1);
+  
 }
 
 

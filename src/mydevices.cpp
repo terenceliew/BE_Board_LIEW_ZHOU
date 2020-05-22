@@ -9,7 +9,7 @@ int detectedfreqRFID = 0;
 int wrong_pwd = 0;
 int wrong_fp = 0;
 fstream loadfpfile;
-fstream loadrfidfile;
+
 
 using namespace std;
 
@@ -138,26 +138,12 @@ void Servo::run(){
     //   cout<<"ERREUR Servo"<<endl;
     // }
 
-    Angle = (getVal()/100)*180;
-	//cout<< "Angle de la porte : "<< Angle<<endl;
+    Angle = (getVal()/100)*360;
+	cout<< "Angle de la porte : "<< Angle<<endl;
 
     sleep(getTemps());
   }
 }
-//Class Buzzer
-Buzzer::Buzzer(int d):AnalogActuator(d){
-  setVal(0);
-}
-void Buzzer::run(){
-  while(1){
-    if(ptrmem!=NULL) setVal(*ptrmem);
-
-	  //cout<< "Buzzer : "<< getVal()<<endl;
-
-    sleep(getTemps());//avoid conflit 
-  }
-}
-
 
 IndoorButton::IndoorButton(int d):DigitalSensor(d){
 	setState(OFF);
@@ -166,26 +152,6 @@ IndoorButton::IndoorButton(int d):DigitalSensor(d){
 void IndoorButton::run(){
 	while(1){
 		if (ifstream("indoor.txt")){
-			setState(ON);
-		}
-		else{
-			setState(OFF);
-		}
-
-		*ptrmem = getState();
-	
-		sleep(getTemps());	
-	}
-
-	
-}
-OutdoorButton::OutdoorButton(int d):DigitalSensor(d){
-	setState(OFF);
-}
-
-void OutdoorButton::run(){
-	while(1){
-		if (ifstream("outdoor.txt")){
 			setState(ON);
 		}
 		else{
@@ -212,7 +178,7 @@ void BiometricSensor::run(){
 			getline(loadfpfile,loadfpstring);
 			
 		}
-		//cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
+		cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
 
 		setVal(stoi(loadfpstring)); 
 		*ptrmem=getVal();
@@ -222,28 +188,7 @@ void BiometricSensor::run(){
 		sleep(getTemps());
 	}
 }
-RFIDSensor::RFIDSensor(int d):AnalogSensor(d){
-	setVal(0);
-}
 
-void RFIDSensor::run(){
-	string loadrfidstring;
-	while(1){
-		loadrfidfile.open("loadrfid.txt");
-		while(!loadrfidfile.eof()){
-			getline(loadrfidfile,loadrfidstring);
-			
-		}
-		//cout<<"Detected RFID : "<<loadrfidstring<<endl;
-
-		setVal(stoi(loadrfidstring)); 
-		*ptrmem=getVal();
-		
-		loadrfidfile.close();
-
-		sleep(getTemps());
-	}
-}
 //classe ExternalDigitalSensorButton
 ExternalDigitalSensorButton::ExternalDigitalSensorButton(int t):Device(),state(OFF),temps(t){
 }
