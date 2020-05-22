@@ -7,7 +7,7 @@
 #include <string.h>
 #include <fstream>
 #include "core_simulation.h"
-#include "mydevices.h"
+//#include "mydevices.h"
 
 
 class Door {
