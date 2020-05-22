@@ -4,11 +4,6 @@
 #include "mydevices.h"
 #include "application.h"
 
-static Door myDoor;
-static FingerprintSystem fpSys;
-static RFIDSystem rfidSys;
-static BurglarAlertSystem baSys;
-
 // la fonction d'initialisation d'arduino
 void Board::setup(){
   // on configure la vitesse de la liaison
