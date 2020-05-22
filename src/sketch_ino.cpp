@@ -110,7 +110,11 @@ void Board::loop(){
     if(cmdIndoor || cmdFp|| cmdRFID){
       myDoor.open();
     }
-  }else{
+    else{
+      myDoor.close();
+    }
+  }
+  else{
     myDoor.close();
   }
   
