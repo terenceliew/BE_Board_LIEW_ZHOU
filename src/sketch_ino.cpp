@@ -4,25 +4,28 @@
 
 static Door myDoor;
 static FingerprintSystem fpSys;
+static RFIDSystem rfidSys;
+static BurglarAlertSystem baSys;
 
 // la fonction d'initialisation d'arduino
 void Board::setup(){
   // on configure la vitesse de la liaison
   Serial.begin(9600);
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
-  pinMode(1,INPUT);
+  //pinMode(1,INPUT);
   pinMode(2,OUTPUT);
   pinMode(3,INPUT);
   pinMode(4,INPUT);
-
-
+  pinMode(5,OUTPUT);
+  pinMode(6,INPUT);
+  pinMode(7,INPUT);
+  pinMode(8,INPUT);
+  pinMode(9,INPUT);
+  //pinMode(10,INPUT);
+  for(int i=0;i<10;i++){
+    io[i]=0;
+  }
   
-  
-  // pinMode(2,INPUT);
-  // pinMode(4,INPUT);
-
-  //pinMode(0,OUTPUT);
-  // pinMode(3,OUTPUT);
 }
 
 // la boucle de controle arduino
@@ -37,37 +40,134 @@ void Board::loop(){
 
   //static int cpt=0;
   //static int bascule=0;
-  static int val_but1; 
-  static int val_fp;
-  static int cmdIndoor;
-  static int cmdFp;
+   int val_butIndoor;
+   int val_butOutdoor; 
+   int val_butSetfp;
+   int val_fp;
+   int val_rfid;
+   int val_fsensor;
 
-  //recuperation des valeurs de capteurs
-  val_but1 = digitalRead(3);
+   int cmdIndoor;
+   int cmdOutdoor;
+   int cmdFp;
+   int cmdRFID;
+   int cmdBA;
+   
+   char buf_rfid[100];
+   char buf_fp[100];
+   char buf_force[100];
+
+   char buf_angle[100];
+   char buf_buzzer[100];
+
+   // char buf_msgIndoor[100];
+   // char buf_msgOutdoor[100];
+
+  /*********recuperation des valeurs de capteurs**********/
+  val_butIndoor = digitalRead(3);
   val_fp = analogRead(4);
+  val_butOutdoor = digitalRead(6);
+  val_rfid = analogRead(7);
+  val_butSetfp = digitalRead(8);
+  val_fsensor = analogRead(9);
+  
+  /*********affichage sur terminal les valeurs des capteurs*********/
+  /*FingerprintSensor*/
+  sprintf(buf_fp,"Detected  FingerprintID: %d",val_fp);
+  Serial.println(buf_fp);
 
-  //appel de software
+  /*rfidSensor*/
+  sprintf(buf_rfid,"Detected  RFID: %d",val_rfid);
+  Serial.println(buf_rfid);
+
+  /*forceSensor*/
+  sprintf(buf_force,"Detected  Force: %d",val_fsensor);
+  Serial.println(buf_force);
+
+
+  /*********appel de software*********/
   /*Indoor*/
-  cmdIndoor = myDoor.detectIndoor(val_but1);
+  cmdIndoor = myDoor.detectIndoor(val_butIndoor);
+  /*Outdoor*/
+  cmdOutdoor = myDoor.detectIndoor(val_butOutdoor);
 
   /*Fingerprint System*/
+  fpSys.setFingerprint(val_butSetfp,val_fp);
   fpSys.verifyFingerprint(val_fp);
   cmdFp = fpSys.getMatch();
 
-  /*Choisir la commande*/
-  if(cmdIndoor || cmdFp){
+  /*RFID System*/
+  rfidSys.verifyRFID(val_rfid);
+  cmdRFID = rfidSys.getMatch();
+
+  /*RFID System*/
+  baSys.run(val_fsensor);
+  cmdBA = baSys.getAlert();
+
+  /**********Choisir la commande**********/
+  /*Commande d'ouverture de la porte*/
+  if(cmdIndoor || cmdFp|| cmdRFID){
     myDoor.open();
   }
   else{
     myDoor.close();
   }
+  
 
-  //faire la commande
+  /*Commande de buzzer*/
+  if(cmdBA){
+    myDoor.alarmBuzzer();
+  }else if(cmdOutdoor){
+    myDoor.ringBuzzer();
+  }
+  else{
+    myDoor.muteBuzzer();
+  }
+
+
+  /*********faire la commande*********/
   analogWrite(2,myDoor.get_cmdAngle());
+  analogWrite(5,myDoor.get_cmdBuzzer());
 
+  /*********Affichage valeur d'actuator en terminal*********/
+  /*Door (Servo)*/
+  sprintf(buf_angle,"Angle : %d",Angle);
+  Serial.println(buf_angle);
+
+  /*Buzzer*/
+  sprintf(buf_buzzer,"Frequence Buzzer : %d MHz",freqBuzzer);
+  Serial.println(buf_buzzer);
+
+
+
+  /*********Gestion d'affichage sur ecran*********/
+  myDoor.screenIndoor();
+  myDoor.screenOutdoor();
+  // sprintf(buf_msgIndoor,myDoor.get_msgIndoor());
+  // sprintf(buf_msgOutdoor,myDoor.get_msgOutdoor());
+  // bus.write(1,buf_msgIndoor,100);
+  // bus.write(2,buf_msgOutdoor,100);
+  bus.write(1,myDoor.get_msgIndoor(),100);
+  bus.write(2,myDoor.get_msgOutdoor(),100);
+
+  Serial.println("-----------------------------------------");
+
+  
+
+  // if(cpt%5==0){
+  //     // tous les 5 fois on affiche sur l ecran la luminosite
+  //   sprintf(buf_fp,"%d",val_fp);
+  //   bus.write(1,buf_fp,100);
+  // }
+
+  sleep(1);
   //mettre a jour les capteurs
 
 
+  // Serial.println("((Door Open))");
+  // Serial.println("((Door Close))");
+  // Serial.println("((Buzzer ON))");
+  // Serial.println("((Buzzer OFF))");
 
   //int i=0;
 

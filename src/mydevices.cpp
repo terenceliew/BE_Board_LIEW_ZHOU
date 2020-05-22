@@ -6,9 +6,12 @@ int luminosite_environnement = 200;
 int Force = 0;
 int Angle = 0;
 int detectedfreqRFID = 0;
+int freqBuzzer = 0; //en MHz
 int wrong_pwd = 0;
 int wrong_fp = 0;
 fstream loadfpfile;
+fstream loadrfidfile;
+fstream forcefile;
 
 
 using namespace std;
@@ -130,28 +133,42 @@ Servo::Servo(int d):AnalogActuator(d){
 void Servo::run(){
   while(1){
     if(ptrmem!=NULL) setVal(*ptrmem);
-    // if(getVal()>=70){
-    //   cout<<"Door OPEN"<<endl;
-    // }else if(getVal()<70){
-    //   cout<<"Door CLOSE"<<endl;
-    // }else{
-    //   cout<<"ERREUR Servo"<<endl;
-    // }
 
-    Angle = (getVal()/100)*360;
-	cout<< "Angle de la porte : "<< Angle<<endl;
+    Angle = (getVal()/100)*180;
+	//cout<< "Angle de la porte : "<< Angle<<endl;
 
     sleep(getTemps());
   }
 }
 
-IndoorButton::IndoorButton(int d):DigitalSensor(d){
+//Class Buzzer
+Buzzer::Buzzer(int d):AnalogActuator(d){
+  setVal(0);
+}
+void Buzzer::run(){
+  while(1){
+    if(ptrmem!=NULL) setVal(*ptrmem);
+
+    if (getVal()){
+    	freqBuzzer=400+getVal();
+    }else{
+    	freqBuzzer = 0;
+    }
+    //freqBuzzer = floor(((double)getVal()/100)*500); //frequence en MHz
+	  //cout<< "Buzzer : "<< getVal()<<endl;
+
+    sleep(getTemps());//avoid conflit 
+  }
+}
+
+
+Button::Button(int d, string nomf):DigitalSensor(d), nomfichier(nomf){
 	setState(OFF);
 }
 
-void IndoorButton::run(){
+void Button::run(){
 	while(1){
-		if (ifstream("indoor.txt")){
+		if (ifstream(nomfichier)){
 			setState(ON);
 		}
 		else{
@@ -173,17 +190,73 @@ BiometricSensor::BiometricSensor(int d):AnalogSensor(d){
 void BiometricSensor::run(){
 	string loadfpstring;
 	while(1){
+
 		loadfpfile.open("loadfp.txt");
 		while(!loadfpfile.eof()){
 			getline(loadfpfile,loadfpstring);
 			
 		}
-		cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
-
-		setVal(stoi(loadfpstring)); 
-		*ptrmem=getVal();
+		//cout<<"Detected FingerprintID : "<<loadfpstring<<endl;
+		if(!loadfpstring.empty()){
+			setVal(stoi(loadfpstring));
+			*ptrmem=getVal(); 
+		}
+		
 		
 		loadfpfile.close();
+
+		sleep(getTemps());
+	}
+}
+
+RFIDSensor::RFIDSensor(int d):AnalogSensor(d){
+	setVal(0);
+}
+
+void RFIDSensor::run(){
+	string loadrfidstring;
+	while(1){
+		loadrfidfile.open("loadrfid.txt");
+		while(!loadrfidfile.eof()){
+			getline(loadrfidfile,loadrfidstring);
+			
+		}
+		//cout<<"Detected RFID : "<<loadrfidstring<<endl;
+		if(!loadrfidstring.empty()){
+			setVal(stoi(loadrfidstring));
+			*ptrmem=getVal(); 
+		}
+		
+		
+		
+		loadrfidfile.close();
+
+		sleep(getTemps());
+	}
+}
+
+ForceSensor::ForceSensor(int d):AnalogSensor(d){
+	setVal(0);
+}
+
+void ForceSensor::run(){
+	string forcestring;
+	while(1){
+
+		forcefile.open("force.txt");
+		while(!forcefile.eof()){
+			getline(forcefile,forcestring);
+			
+		}
+		//cout<<"Detected Force : "<<forcestring<<endl;
+		if(!forcestring.empty()){
+			setVal(stoi(forcestring)); 
+			*ptrmem=getVal();
+		}
+		
+		
+		
+		forcefile.close();
 
 		sleep(getTemps());
 	}

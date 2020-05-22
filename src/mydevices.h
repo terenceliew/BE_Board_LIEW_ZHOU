@@ -13,7 +13,9 @@ extern int luminosite_environnement;
 extern int Force;
 extern int Angle;
 extern fstream loadfpfile;
+extern fstream loadrfidfile;
 extern int detectedfreqRFID;
+extern int freqBuzzer;
 extern int wrong_pwd;
 extern int wrong_fp;
 
@@ -98,17 +100,42 @@ class Servo : public AnalogActuator{
   virtual void run();
 };
 
-//BoutonIndoor
-class IndoorButton : public DigitalSensor{
+//Class Buzzer
+class Buzzer : public AnalogActuator{
+  public :
+    Buzzer(int d);
+    virtual void run();
+
+};
+
+//bouton
+class Button : public DigitalSensor{
+private:
+  string nomfichier;
 public:
-  IndoorButton(int d);
+  Button(int d,string nomf);
   virtual void run();
 };
+
+
 
 //BiometricSensor
 class BiometricSensor : public AnalogSensor{
 public:
   BiometricSensor(int d);
+  virtual void run();
+};
+
+class RFIDSensor : public AnalogSensor{
+  public:
+    RFIDSensor(int d);
+    virtual void run();
+};
+
+//ForceSensor
+class ForceSensor : public AnalogSensor{
+public:
+  ForceSensor(int d);
   virtual void run();
 };
 

@@ -22,9 +22,10 @@
 #define LOW 0
 #define MAX_I2C_DEVICES 4
 #define I2C_BUFFER_SIZE 1024
-#define MAX_IO_PIN 6
+#define MAX_IO_PIN 12
 #define ON 1
 #define OFF 0
+#define FORCELIM 88
 
 using namespace std;
 
