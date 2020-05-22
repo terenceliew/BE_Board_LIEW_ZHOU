@@ -10,14 +10,9 @@
 
 /*Declaration des varibales globales (variables environment)*/
 extern int luminosite_environnement;
-extern int Force;
 extern int Angle;
-extern fstream loadfpfile;
-extern fstream loadrfidfile;
-extern int detectedfreqRFID;
 extern int freqBuzzer;
-extern int wrong_pwd;
-extern int wrong_fp;
+
 
 class Sensor : public Device{
   private :
@@ -76,15 +71,15 @@ class AnalogActuator:public Actuator{
     int getVal();
 };
 
-//Class Camera
-class Camera : public DigitalActuator{
-  private :
-    int capture;
-  public :
-    // initialisation du temps de rafraichiisement
-    Camera(int d);
-    virtual void run();
-};
+// //Class Camera
+// class Camera : public DigitalActuator{
+//   private :
+//     int capture;
+//   public :
+//     // initialisation du temps de rafraichiisement
+//     Camera(int d);
+//     virtual void run();
+// };
 
 //Class LED
 class LED : public DigitalActuator{

@@ -118,7 +118,10 @@ public:
     // threads representant chaque senseur/actionneur sur le bus I2C
   thread *tabthreadbus[MAX_I2C_DEVICES];
 
-  //Door myDoor;
+  // Door myDoor;
+  // FingerprintSystem fpSys;
+  // RFIDSystem rfidSys;
+  // BurglarAlertSystem baSys;
     
 // simulation de la boucle de controle arduino
     void run();
@@ -139,7 +142,7 @@ public:
   // fonction arduino : initialisation de la carte arduino
   void setup();
     // fonction arduino : boucle de controle de la carte arduino
-  void loop();
+  void loop();//Door myDoor, FingerprintSystem fpSys, RFIDSystem rfidSys, BurglarAlertSystem baSys
 };
 
 #endif

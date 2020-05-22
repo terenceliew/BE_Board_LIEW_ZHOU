@@ -3,15 +3,11 @@
 
 /*Initialisation des varibales globales (variables environment)*/
 int luminosite_environnement = 200;
-int Force = 0;
 int Angle = 0;
-int detectedfreqRFID = 0;
 int freqBuzzer = 0; //en MHz
-int wrong_pwd = 0;
-int wrong_fp = 0;
-fstream loadfpfile;
-fstream loadrfidfile;
-fstream forcefile;
+
+
+
 
 
 using namespace std;
@@ -80,23 +76,23 @@ int AnalogActuator::getVal(){
   return val;
 }
 
-//class Camera
-Camera::Camera(int d):DigitalActuator(d),capture(0){
-  setState(LOW);
-}
-void Camera::run(){
-  while(1){
-    if(ptrmem!=NULL) setState(*ptrmem);
-    if (getState()==LOW){
-      //cout << "((((Camera OFF))))\n";
-    }
-    else{
-    	//cout << "((((Camera ON))))\n"; 
-    if(Force>100) capture=1;   
-    sleep(getTemps());
-    }
-  }
-}
+// //class Camera
+// Camera::Camera(int d):DigitalActuator(d),capture(0){
+//   setState(LOW);
+// }
+// void Camera::run(){
+//   while(1){
+//     if(ptrmem!=NULL) setState(*ptrmem);
+//     if (getState()==LOW){
+//       //cout << "((((Camera OFF))))\n";
+//     }
+//     else{
+//     	//cout << "((((Camera ON))))\n"; 
+//     if(Force>100) capture=1;   
+//     sleep(getTemps());
+//     }
+//   }
+// }
 
 //class LED
 LED::LED(int d):DigitalActuator(d){
@@ -188,6 +184,7 @@ BiometricSensor::BiometricSensor(int d):AnalogSensor(d){
 }
 
 void BiometricSensor::run(){
+	fstream loadfpfile;
 	string loadfpstring;
 	while(1){
 
@@ -214,6 +211,7 @@ RFIDSensor::RFIDSensor(int d):AnalogSensor(d){
 }
 
 void RFIDSensor::run(){
+	fstream loadrfidfile;
 	string loadrfidstring;
 	while(1){
 		loadrfidfile.open("loadrfid.txt");
@@ -240,6 +238,7 @@ ForceSensor::ForceSensor(int d):AnalogSensor(d){
 }
 
 void ForceSensor::run(){
+	fstream forcefile;
 	string forcestring;
 	while(1){
 
