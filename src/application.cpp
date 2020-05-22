@@ -156,7 +156,7 @@ void FingerprintSystem::setFingerprint(int buttonFp,int newFp){
 		// cout<<"newfp :"<<to_string(newFp)<<endl;
 		
 			//cout<<"helllllooooo"<<endl;
-		savedfpfile.open("savedfp.txt"); //delete content before open
+		savedfpfile.open("savedfp.txt",ios::out | ios::trunc); //delete content before open
 
 		savedfpfile << to_string(newFp);
 		

@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <vector>
 #include "core_simulation.h"
 #include "application.h"
 
@@ -53,6 +54,10 @@ void Board::loop(){
    int cmdRFID;
    int cmdBA;
    
+   
+   char buf_butIndoor[100];
+   char buf_butOutdoor[100];
+   char buf_butSetfp[100];
    char buf_rfid[100];
    char buf_fp[100];
    char buf_force[100];
@@ -60,8 +65,16 @@ void Board::loop(){
    char buf_angle[100];
    char buf_buzzer[100];
 
-   // char buf_msgIndoor[100];
-   // char buf_msgOutdoor[100];
+   vector<char*> vecbuf;//utilisation vector de STL
+
+   /*remplir le vecteur de buffer*/
+   vecbuf.push_back(buf_butIndoor);
+   vecbuf.push_back(buf_butOutdoor);
+   vecbuf.push_back(buf_butSetfp);
+   vecbuf.push_back(buf_rfid);
+   vecbuf.push_back(buf_fp);
+   vecbuf.push_back(buf_force);
+
 
   /*********recuperation des valeurs de capteurs**********/
   val_butIndoor = digitalRead(3);
@@ -72,18 +85,28 @@ void Board::loop(){
   val_fsensor = analogRead(9);
   
   /*********affichage sur terminal les valeurs des capteurs*********/
+  /*Indoor Button*/
+  sprintf(buf_butIndoor,"Indoor button: %d",val_butIndoor);
+
+  /*Outdoor Button*/
+  sprintf(buf_butOutdoor,"Outdoor button: %d",val_butOutdoor);
+
+  /*Set fingerprint button*/
+  sprintf(buf_butSetfp,"Set fingerprint button: %d",val_butSetfp);
+
   /*FingerprintSensor*/
   sprintf(buf_fp,"Detected  FingerprintID: %d",val_fp);
-  Serial.println(buf_fp);
 
   /*rfidSensor*/
   sprintf(buf_rfid,"Detected  RFID: %d",val_rfid);
-  Serial.println(buf_rfid);
 
   /*forceSensor*/
   sprintf(buf_force,"Detected  Force: %d",val_fsensor);
-  Serial.println(buf_force);
 
+  /*affichage des buffers dans le vecteur*/
+  for(long unsigned int i=0;i<vecbuf.size();i++){
+    Serial.println(vecbuf[i]);
+  }
 
   /*********appel de software*********/
   /*Indoor*/
@@ -107,7 +130,7 @@ void Board::loop(){
   /**********Choisir la commande**********/
   /*Commande d'ouverture de la porte*/
   if(!cmdBA){
-    if(cmdIndoor || cmdFp|| cmdRFID){
+    if(cmdIndoor || (cmdFp && !val_butSetfp) || cmdRFID){
       myDoor.open();
     }
     else{
@@ -136,7 +159,7 @@ void Board::loop(){
 
   /*********Affichage valeur d'actuator en terminal*********/
   /*Door (Servo)*/
-  sprintf(buf_angle,"Angle : %d",Angle);
+  sprintf(buf_angle,"Door angle : %d",Angle);
   Serial.println(buf_angle);
 
   /*Buzzer*/
