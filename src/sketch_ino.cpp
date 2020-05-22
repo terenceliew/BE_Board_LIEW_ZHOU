@@ -106,10 +106,11 @@ void Board::loop(){
 
   /**********Choisir la commande**********/
   /*Commande d'ouverture de la porte*/
-  if(cmdIndoor || cmdFp|| cmdRFID){
-    myDoor.open();
-  }
-  else{
+  if(!cmdBA){
+    if(cmdIndoor || cmdFp|| cmdRFID){
+      myDoor.open();
+    }
+  }else{
     myDoor.close();
   }
   
