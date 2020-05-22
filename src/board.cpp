@@ -5,6 +5,7 @@
 int main(){
   // creation d'une board
   Board esp8266;
+
   // achat des senseurs et actionneurs
   //AnalogSensorTemperature temperature(DELAY,TEMP);
   //AnalogSensorLuminosity luminosity(DELAY);
@@ -19,7 +20,9 @@ int main(){
   Buzzer buz(DELAY);
   RFIDSensor rfid(DELAY);
   ForceSensor fsensor(DELAY);
-  I2CActuatorScreen screen;
+  I2CActuatorScreen screenIndoor;
+  I2CActuatorScreen screenOutdoor;
+  
   
   // branchement des capteurs actionneurs
   // esp8266.pin(1,temperature);
@@ -37,8 +40,9 @@ int main(){
 
   //esp8266.pin(0,led1);
   //esp8266.pin(3,led2);
-  esp8266.i2c(1,screen);
 
+  esp8266.i2c(1,screenIndoor);
+  esp8266.i2c(2,screenOutdoor);
   
   // allumage de la carte
   esp8266.run();

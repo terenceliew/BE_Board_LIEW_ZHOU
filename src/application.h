@@ -14,11 +14,15 @@ class Door {
 private:
 	int cmdAngle;
 	int cmdBuzzer;
+	char msgIndoor[100];
+	char msgOutdoor[100];
 
 public:
 	Door();
 	int get_cmdAngle();
 	int get_cmdBuzzer();
+	char* get_msgIndoor();
+	char* get_msgOutdoor();
 	void set_cmdAngle(int a);
 	void set_cmdBuzzer(int b);
 	void open();
@@ -27,7 +31,10 @@ public:
 	int detectIndoor(int val_button);
 	int detectOutdoor(int val_button);
 	void ringBuzzer();
+	void alarmBuzzer();
 	void muteBuzzer();
+	void screenIndoor();
+	void screenOutdoor();
 };
 
 class FingerprintSystem{

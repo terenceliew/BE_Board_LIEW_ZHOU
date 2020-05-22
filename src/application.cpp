@@ -1,7 +1,7 @@
 #include "application.h"
 
 
-Door::Door():cmdAngle(0){
+Door::Door():cmdAngle(0),cmdBuzzer(0),msgIndoor("Initialising Indoor..."),msgOutdoor("Initialising Outdoor..."){
 	
 }
 
@@ -57,8 +57,51 @@ void Door::ringBuzzer(){
 	cmdBuzzer=80;
 }
 
+void Door::alarmBuzzer(){
+	cmdBuzzer=100;
+}
+
+
 void Door::muteBuzzer(){
 	cmdBuzzer=0;
+}
+
+char* Door::get_msgIndoor(){
+	return msgIndoor;
+}
+
+char* Door::get_msgOutdoor(){
+	return msgOutdoor;
+}
+
+
+void Door::screenIndoor(){
+	if(!cmdAngle){
+		//door is closed
+		sprintf(msgIndoor," ((Inside)) Please press the indoor button!");
+	} else{
+		//door is open
+		sprintf(msgIndoor," Door is open!");
+	}
+
+	if(cmdBuzzer>5 && cmdBuzzer<85 ){
+		//someone rings the doorbell
+		sprintf(msgIndoor + strlen(msgIndoor)," ((Inside)) Someone is at the door!");
+	}
+	else if(cmdBuzzer>=85){
+		//someone is forcing the door!
+		sprintf(msgIndoor + strlen(msgIndoor)," ((Inside)) Burglar Alert!!! Calling Police...");
+	}
+}
+
+void Door::screenOutdoor(){
+	if(!cmdAngle){
+		//door is closed
+		sprintf(msgOutdoor," ((Outside)) Please scan your fingerprint or your card! Doorbell is on your left!");
+	} else{
+		//door is open
+		sprintf(msgOutdoor," Door is open!");
+	}
 }
 
 FingerprintSystem::FingerprintSystem():match(0){}
