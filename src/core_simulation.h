@@ -32,7 +32,7 @@ using namespace std;
 enum typeio {OUTPUT, INPUT};
 
 // exceptions gerees
-enum excep {SPEED, INOUT, ADDRESS, SIZEXC, EMPTY};
+enum excep {SPEED, INOUT, ADDRESS, SIZEXC, EMPTY, FORCEERR, FPERR, RFIDERR};
 class BoardException{
 protected:
     // numero de l'exception
@@ -119,8 +119,11 @@ public:
   thread *tabthreadbus[MAX_I2C_DEVICES];
 
   Door myDoor;
+
   FingerprintSystem fpSys;
+  
   RFIDSystem rfidSys;
+  
   BurglarAlertSystem baSys;
     
 // simulation de la boucle de controle arduino

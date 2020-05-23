@@ -17,6 +17,9 @@ string BoardException::text(){
   case ADDRESS : s=string("mauvaise adresse de la pin"); break;
   case SIZEXC : s=string("taille erronee"); break;
   case EMPTY: s=string("zone vide"); break;
+  case FORCEERR : s=string("Force Sensor error! Please key in a force between 0 and 100 in force.txt!");break;
+  case FPERR : s=string("Fingerprint Sensor error! Please key in a value between 0 and 55555 in loadfp.txt!");break;
+  case RFIDERR : s=string("RFID Sensor error! Please key in a value between 0 and 44444 in loadrfid.txt!");break;
   default: s=string("erreur inconnue");
   }
   return s;
@@ -122,7 +125,7 @@ void Board::run(){
     while(1) loop();
   }
   catch(BoardException e){
-    cout <<"exception: "<<e.get() <<endl;
+    cout <<"exception: "<<e.text() <<endl;
   }
 }
 

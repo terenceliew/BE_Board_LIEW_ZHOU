@@ -4,6 +4,8 @@
 #include "mydevices.h"
 #include "application.h"
 
+
+
 // la fonction d'initialisation d'arduino
 void Board::setup(){
   // on configure la vitesse de la liaison
@@ -58,13 +60,35 @@ void Board::loop(){
    vecbuf.push_back(buf_force);
 
 
+
   /*********recuperation des valeurs de capteurs**********/
-  val_butIndoor = digitalRead(3);
-  val_fp = analogRead(4);
-  val_butOutdoor = digitalRead(6);
-  val_rfid = analogRead(7);
-  val_butSetfp = digitalRead(8);
-  val_fsensor = analogRead(9);
+    val_butIndoor = digitalRead(3);
+    val_butOutdoor = digitalRead(6);
+    val_butSetfp = digitalRead(8);
+
+    val_fp = analogRead(4);
+    if( val_fp<0 || val_fp>55555 ){
+      //exception pour fingerprint sensor
+      //rmq important! Cette exception ne detect pas la valeur plus grand que 65535(unsigned short)
+      throw BoardException(FPERR);
+    }
+    
+   
+    val_rfid = analogRead(7);
+    //exception pour rfid sensor
+    //rmq important! Cette exception ne detect pas la valeur plus grand que 65535(unsigned short)
+    if( val_rfid<0 || val_rfid>44444 ){
+      throw BoardException(RFIDERR);
+    }
+    
+    val_fsensor = analogRead(9);
+    /*exception si force est plus petite que 0 ou plus grand que 100*/
+    //rmq important! Cette exception ne detect pas la valeur plus grand que 65535(unsigned short)
+    if( val_fsensor<0 || val_fsensor>100 ){
+      throw BoardException(FORCEERR);;
+    }
+
+ 
   
   /*********affichage sur terminal les valeurs des capteurs*********/
   /*Indoor Button*/

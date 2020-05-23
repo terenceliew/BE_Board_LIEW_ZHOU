@@ -46,7 +46,7 @@ This button is used to simulate a doorbell situated outside a room. The buzzer w
 This system is capable of detecting fingerprint and unlock the door if fingerprint matches the saved fingerprint. This system also allows to set a new fingerprint. The detected fingerprint ID is loaded to `loadfp.txt` file, whereas the saved fingerprint ID is stored in `savedfp.txt`. For this version, only one fingerprint ID can be stored.
 #### Execution
 + By default the values of the fingerprint IDs does not match. 
-+ To open the door, changed the ID in `loadfp.txt` so that it's similar to the one in `savedfp.txt`.
++ To open the door, change the ID in `loadfp.txt` so that it's similar to the one in `savedfp.txt`.
 + To close the door, key in a different value of fingerprint ID in `loadfp.txt` than the one in `savedfp.txt`.
 + To set a new fingerprint ID, key in the new fingerprint ID in `loadfp.txt` and create a new file in `src` folder named `setFp.txt`. The value in `loadfp.txt` will be copied automatically to `savedfp.txt`. Note that the door will not open when the `setFp.txt` file is still present in the `src` folder. Delete it to open the door.
 
@@ -87,6 +87,11 @@ Screens situated at the inside and outside of the door gives instructions to use
 ((Inside)) Burglar Alert!!! Calling Police...
 ((Outside)) Don't force the door, the police is coming !!!
 ```
+
+## Exception and Limits for Sensors
++ Fingerprint Sensor : 0-55555 
++ RFID Sensor : 0-44444
++ Force Sensor : 0-100
 
 ## Branches
 + `master` :  The newest stable version.
