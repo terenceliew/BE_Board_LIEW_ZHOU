@@ -117,15 +117,16 @@ public:
   Terminal Serial;
     // threads representant chaque senseur/actionneur sur le bus I2C
   thread *tabthreadbus[MAX_I2C_DEVICES];
-
+    // application represantant l'objet Door
   Door myDoor;
-
+    // application permet d'identification par fingerprint
   FingerprintSystem fpSys;
-  
+    // application permet d'identification par RFID
   RFIDSystem rfidSys;
-  
+    // application permet de declencher le buzzer s'il y a une intrusion
   BurglarAlertSystem baSys;
-    
+
+  
 // simulation de la boucle de controle arduino
     void run();
   // accroachage d'un senseur/actionneur à une pin

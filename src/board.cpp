@@ -7,16 +7,12 @@ int main(){
   Board esp8266;
 
   // achat des senseurs et actionneurs
-  //AnalogSensorTemperature temperature(DELAY,TEMP);
-  //AnalogSensorLuminosity luminosity(DELAY);
-  //ExternalDigitalSensorButton button(DELAY);
-  //DigitalActuatorLED led1(DELAY);
-  //IntelligentDigitalActuatorLED led2(DELAY);
-  Servo servm(DELAY);
-  Button butIndoor(DELAY,"indoor.txt");
+  // les boutons est paramétrés avec les fichier qui les commande
+  Button butIndoor(DELAY,"indoor.txt"); 
   Button setFp (DELAY, "setFp.txt");
-  BiometricSensor fp(DELAY);
   Button butOutdoor (DELAY, "outdoor.txt");
+  Servo servm(DELAY); 
+  BiometricSensor fp(DELAY);
   Buzzer buz(DELAY);
   RFIDSensor rfid(DELAY);
   ForceSensor fsensor(DELAY);
@@ -25,9 +21,6 @@ int main(){
   
   
   // branchement des capteurs actionneurs
-  // esp8266.pin(1,temperature);
-  // esp8266.pin(2,luminosity);
-  //esp8266.pin(4,button);
   esp8266.pin(2,servm);
   esp8266.pin(3,butIndoor);
   esp8266.pin(4,fp);
@@ -36,11 +29,8 @@ int main(){
   esp8266.pin(7,rfid);
   esp8266.pin(8,setFp);
   esp8266.pin(9,fsensor);
-  
 
-  //esp8266.pin(0,led1);
-  //esp8266.pin(3,led2);
-
+  // branchement des ecrans
   esp8266.i2c(1,screenIndoor);
   esp8266.i2c(2,screenOutdoor);
   

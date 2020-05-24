@@ -12,26 +12,25 @@ void Board::setup(){
   Serial.begin(9600);
 // on fixe les pin en entree et en sorite en fonction des capteurs/actionneurs mis sur la carte
 
-  pinMode(2,OUTPUT);
-  pinMode(3,INPUT);
-  pinMode(4,INPUT);
-  pinMode(5,OUTPUT);
-  pinMode(6,INPUT);
-  pinMode(7,INPUT);
-  pinMode(8,INPUT);
-  pinMode(9,INPUT);
+  pinMode(2,OUTPUT); //servo motor
+  pinMode(3,INPUT); //indoor button
+  pinMode(4,INPUT); //fingerprint sensor
+  pinMode(5,OUTPUT); //buzzer
+  pinMode(6,INPUT); //doorbell (outdoor button)
+  pinMode(7,INPUT); //RFID sensor
+  pinMode(8,INPUT); //set fingerprint button
+  pinMode(9,INPUT); //force sensor
 
-  for(int i=0;i<10;i++){
+  /*Intialisation des valeurs des pins*/
+  for(int i=0;i<MAX_IO_PIN;i++){
     io[i]=0;
   }
-  
 }
 
 // la boucle de controle arduino
 void Board::loop(){
 
-  //static int cpt=0;
-  //static int bascule=0;
+    /*Declaration des variables pour les valeurs des capteurs*/
    int val_butIndoor;
    int val_butOutdoor; 
    int val_butSetfp;
@@ -39,6 +38,7 @@ void Board::loop(){
    int val_rfid;
    int val_fsensor;
    
+   /*buffer permetant d'afficher les valeurs de capteurs et actionneurs*/
    char buf_butIndoor[100];
    char buf_butOutdoor[100];
    char buf_butSetfp[100];
@@ -49,7 +49,7 @@ void Board::loop(){
    char buf_angle[100];
    char buf_buzzer[100];
 
-   vector<char*> vecbuf;//utilisation vector de STL
+   vector<char*> vecbuf;//utilisation vector de STL pour stocker les buffer
 
    /*remplir le vecteur de buffer*/
    vecbuf.push_back(buf_butIndoor);
@@ -61,7 +61,7 @@ void Board::loop(){
 
 
 
-  /*********recuperation des valeurs de capteurs**********/
+  /**********recuperation des valeurs de capteurs**********/
     val_butIndoor = digitalRead(3);
     val_butOutdoor = digitalRead(6);
     val_butSetfp = digitalRead(8);
@@ -143,8 +143,9 @@ void Board::loop(){
   Serial.println(buf_buzzer);
 
   /*********Gestion d'affichage sur ecran*********/
-  
+  /*Ecran a l'interieur*/
   bus.write(1,myDoor.get_msgIndoor(),100);
+  /*Ecran a l'exerieur*/
   bus.write(2,myDoor.get_msgOutdoor(),100);
 
   Serial.println("-----------------------------------------");

@@ -6,6 +6,7 @@
 #include "core_simulation.h"
 //#include "application.h"
 
+
 // class BoardException
 int BoardException::get(){return num;}
 
@@ -36,7 +37,7 @@ void Terminal::println(string s){
   cout <<"Serial: "<< s<<endl;
 }
 
-// representatoin du bus I2C
+// representation du bus I2C
 I2C::I2C(){
   for(int i=0;i<MAX_I2C_DEVICES;i++){
     registre[i]=new char[I2C_BUFFER_SIZE];

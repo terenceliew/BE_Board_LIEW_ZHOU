@@ -1,58 +1,43 @@
 #include "application.h"
 
-
+// Classe Door
 Door::Door():cmdAngle(0),cmdBuzzer(0),msgIndoor("Initialising Indoor..."),msgOutdoor("Initialising Outdoor..."){
-	
 }
-
 int Door::get_cmdAngle(){
 	return cmdAngle;
 }
-
 void Door::set_cmdAngle(int a){
 	cmdAngle = a;
 }
-
 int Door::get_cmdBuzzer(){
 	return cmdBuzzer;
 }
-
 void Door::set_cmdBuzzer(int b){
 	cmdBuzzer = b;
 }
-
 /*open door*/
 void Door::open(){
-	cmdAngle=100;;
+	cmdAngle=100;
 }
-
 /*close door*/
 void Door::close(){
 	cmdAngle=0;
 }
-
-
 void Door::ringBuzzer(){
 	cmdBuzzer=80;
 }
-
 void Door::alarmBuzzer(){
 	cmdBuzzer=100;
 }
-
-
 void Door::muteBuzzer(){
 	cmdBuzzer=0;
 }
-
 char* Door::get_msgIndoor(){
 	return msgIndoor;
 }
-
 char* Door::get_msgOutdoor(){
 	return msgOutdoor;
 }
-
 void Door::screenIndoor(){
 	if(!cmdAngle){
 		//door is closed
@@ -73,7 +58,6 @@ void Door::screenIndoor(){
 
 
 }
-
 void Door::screenOutdoor(){
 	if(!cmdAngle){
 		//door is closed
@@ -89,15 +73,10 @@ void Door::screenOutdoor(){
 		sprintf(msgOutdoor," Door is open!");
 	}
 }
-
-
 void Door::run(int cmdBA,int val_butIndoor,int val_butOutdoor, int cmdFp, int val_butSetfp, int cmdRFID){
-	
-
-
-	/*Commande d'ouverture de la porte*/
+		/*Commande d'ouverture de la porte*/
 	if(!cmdBA){
-	    if(val_butIndoor || (cmdFp && !val_butSetfp) || cmdRFID){
+	    if((val_butIndoor || cmdFp  || cmdRFID) && !val_butSetfp ){
 	      open();
 	    }
 	    else{
@@ -125,107 +104,110 @@ void Door::run(int cmdBA,int val_butIndoor,int val_butOutdoor, int cmdFp, int va
 }
 
 
-
-
+// Classe FingerprintSystem
 FingerprintSystem::FingerprintSystem():match(0){}
-
 int FingerprintSystem::getMatch(){
 	return match;
 }
-
 /*verifyFingerprint*/
 void FingerprintSystem::verifyFingerprint(int loadfpval){
 	string savedfpstring;
 	static int savedfpval;
 	fstream savedfpfile;
 
+	// ouverture du fichier et obtention de la valeur dans le fichier
 	savedfpfile.open("savedfp.txt");
 	while(!savedfpfile.eof()){
 		getline(savedfpfile,savedfpstring);
-		
 	}
 	
+	// si la valeur sur le fichier est récupéré avec succès, on la converti en integer
 	if (!savedfpstring.empty()){
 		
 		savedfpval=stoi(savedfpstring);
 	}
 	
-	
+	// verification si la valeur sauvegardé et celle detecté sont identiques ou pas
 	if(savedfpval==loadfpval){
 		match=1;
 	}else{
 		match=0;
 	}
 	
+	// fermeture du fichier
 	savedfpfile.close();
 }
-
 /*set new Fingerprint*/
 void FingerprintSystem::setFingerprint(int buttonFp,int newFp){
 	string savedfpstring;
-
 	fstream savedfpfile;
 
-
+	//	si le bouton pour enregistrer un nouveau empreinte est appuye 
 	if(buttonFp){
-	
+		
+		// ouverture du fichier et supprime l'ancien valeur d'ID
 		savedfpfile.open("savedfp.txt",ios::out | ios::trunc); //delete content before open
 
+		// copie la nouvelle ID sur le fichier
 		savedfpfile << to_string(newFp);
 		
-		
+		// fermeture du fichier
 		savedfpfile.close();
 			
 			
 	}
 	
 }
-
 void FingerprintSystem::run(int val_butSetfp,int val_fp){
 	setFingerprint(val_butSetfp,val_fp);
     verifyFingerprint(val_fp);
 }
 
-RFIDSystem::RFIDSystem():match(0){}
 
+// Classe RFIDSystem
+RFIDSystem::RFIDSystem():match(0){}
 int RFIDSystem::getMatch(){
 	return match;
 }
-
 /*verifyRFID*/
 void RFIDSystem::verifyRFID(int loadrfidval){
 	string savedrfidstring;
 	int savedrfidval;
 	fstream savedrfidfile;
 
+	// ouverture du fichier et obtention de la valeur dans le fichier
 	savedrfidfile.open("savedrfid.txt");
 	while(!savedrfidfile.eof()){
 		getline(savedrfidfile,savedrfidstring);
 		
 	}
 	
+	// si la valeur sur le fichier est récupéré avec succès, on la converti en integer
 	if (!savedrfidstring.empty()){
 		savedrfidval=stoi(savedrfidstring);
 	}
 
+	// verification si la valeur sauvegardé et celle detecté sont identiques ou pas
 	if(savedrfidval==loadrfidval){
 		match=1;
 	}else{
 		match=0;
 	}
 
+	// fermeture du fichier
 	savedrfidfile.close();
 }
 
-BurglarAlertSystem::BurglarAlertSystem():alert(0){}
 
+// Classe BurglarAlertSystem
+BurglarAlertSystem::BurglarAlertSystem():alert(0){}
 int BurglarAlertSystem::getAlert(){
 	return alert;
 }
-
 /*verifyFingerprint*/
 void BurglarAlertSystem::run(int forceval){
 
+	// Si la force detectée est supérieur à la force limite définie, on declenche l'alarme et vice versa
 	if(forceval>FORCELIM){
 		alert=1;
 	}else{
