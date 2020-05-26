@@ -26,7 +26,7 @@ This is a project done in conjunction with 4th year INSA Toulouse module on C++.
 ## Terminal Presentation
 After starting the programme, you will notice several lines starting from `Serial : `. These lines display the states and values of sensors and actuators used in the project. You will also notice the the two lines starting with `---screen : `. The sentences that comes after them shows the display of the screens installed. One of the screen is installed outside of the door whereas the other is inside. Indications are shown with the words `((Inside))` and `((Outside))`.
 
-## How it works?
+## How does it work?
 ### Indoor Button
 #### Function
 This button is used to simulate an unlock door button situated inside a room. The door is open when the angle is `180` and close when it's `0`.
